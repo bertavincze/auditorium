@@ -5,12 +5,12 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(20) UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    name VARCHAR(20) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT NOT NULL,
-	CONSTRAINT name_not_empty CHECK (name <> ''),
 	CONSTRAINT email_not_empty CHECK (email <> ''),
+	CONSTRAINT name_not_empty CHECK (name <> ''),
 	CONSTRAINT password_not_empty CHECK (password <> ''),
 	CONSTRAINT role_is_valid CHECK (role = 'artist' OR role = 'regular')
 );
@@ -34,7 +34,7 @@ CREATE TABLE albums (
 CREATE TABLE tracks (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
-    duration NUMERIC NOT NULL,
+	duration TIME NOT NULL,
     album_id INTEGER NOT NULL,
     FOREIGN KEY (album_id) REFERENCES albums(id),
     CONSTRAINT title_not_empty CHECK (title <> '')
@@ -48,30 +48,32 @@ CREATE TABLE favourites (
     FOREIGN KEY (album_id) REFERENCES albums(id)
 );
 
-CREATE OR REPLACE FUNCTION set_date_published() RETURNS TRIGGER AS '
-    BEGIN
+CREATE OR REPLACE FUNCTION set_date_published()
+RETURNS TRIGGER AS
+    'BEGIN
         IF (TG_OP = ''INSERT'') THEN
             IF (NEW.is_public = true) THEN
-            NEW.date_published = CURRENT_DATE
+            NEW.date_published = now();
             END IF;
-            ELSE IF (NEW.is_public = false) THEN
-            NEW.date_published = NULL
+            IF (NEW.is_public = false) THEN
+            NEW.date_published = NULL;
             END IF;
         END IF;
-        ELSE IF (TG_OP = ''UPDATE'') THEN
+		RETURN NEW;
+        IF (TG_OP = ''UPDATE'') THEN
             IF (NEW.is_public = true AND OLD.is_public = false) THEN
-            NEW.date_published = CURRENT_DATE
+            NEW.date_published = now();
             END IF;
-            ELSE IF (NEW.is_public = true AND OLD.is_public = true) THEN
-            NEW.date_published = OLD.date_published
-            END IF;
-            ELSE IF (NEW.is_public = false AND OLD.is_public = true) THEN
-            NEW.date_published = OLD.date_published
+            IF (NEW.is_public = true AND OLD.is_public = true) THEN
+            NEW.date_published = OLD.date_published;
+			END IF;
+            IF (NEW.is_public = false AND OLD.is_public = true) THEN
+            NEW.date_published = OLD.date_published;
             END IF;
         END IF;
         RETURN NEW;
-    END;
-'
+	END;
+'LANGUAGE plpgsql;
 
 CREATE TRIGGER set_date_published
     BEFORE INSERT OR UPDATE ON albums
@@ -83,10 +85,10 @@ INSERT INTO users (email, name, password, role) VALUES
 	('r', 'r', 'r', 'regular');
 
 INSERT INTO albums (user_id, title, cover_art, tracks, is_public, is_downloadable) VALUES
-	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, false, false);
+	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, true, false);
 
 INSERT INTO tracks (title, duration, album_id) VALUES
-	('Erland Dryselius', 03:20, 1);
+	('Erland Dryselius', '03:20', 1);
 
 INSERT INTO favourites (user_id, album_id) VALUES
     (2, 1);
