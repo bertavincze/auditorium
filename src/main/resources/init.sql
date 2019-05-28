@@ -34,7 +34,6 @@ CREATE TABLE albums (
 CREATE TABLE tracks (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
-	duration TIME NOT NULL,
     album_id INTEGER NOT NULL,
     FOREIGN KEY (album_id) REFERENCES albums(id),
     CONSTRAINT title_not_empty CHECK (title <> '')
@@ -53,24 +52,19 @@ RETURNS TRIGGER AS
     'BEGIN
         IF (TG_OP = ''INSERT'') THEN
             IF (NEW.is_public = true) THEN
-            NEW.date_published = now();
+                NEW.date_published = now();
+            ELSE
+                NEW.date_published = NULL;
             END IF;
-            IF (NEW.is_public = false) THEN
-            NEW.date_published = NULL;
-            END IF;
-        END IF;
-		RETURN NEW;
-        IF (TG_OP = ''UPDATE'') THEN
+        ELSIF (TG_OP = ''UPDATE'') THEN
             IF (NEW.is_public = true AND OLD.is_public = false) THEN
             NEW.date_published = now();
-            END IF;
-            IF (NEW.is_public = true AND OLD.is_public = true) THEN
+            ELSIF (NEW.is_public = true AND OLD.is_public = true) THEN
             NEW.date_published = OLD.date_published;
-			END IF;
-            IF (NEW.is_public = false AND OLD.is_public = true) THEN
+            ELSIF (NEW.is_public = false AND OLD.is_public = true) THEN
             NEW.date_published = OLD.date_published;
             END IF;
-        END IF;
+		END IF;
         RETURN NEW;
 	END;
 'LANGUAGE plpgsql;
@@ -85,10 +79,10 @@ INSERT INTO users (email, name, password, role) VALUES
 	('r', 'r', 'r', 'regular');
 
 INSERT INTO albums (user_id, title, cover_art, tracks, is_public, is_downloadable) VALUES
-	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, true, false);
+	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, false, false);
 
-INSERT INTO tracks (title, duration, album_id) VALUES
-	('Erland Dryselius', '03:20', 1);
+INSERT INTO tracks (title, album_id) VALUES
+	('Erland Dryselius', 1);
 
 INSERT INTO favourites (user_id, album_id) VALUES
     (2, 1);
