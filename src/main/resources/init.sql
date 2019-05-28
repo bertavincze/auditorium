@@ -23,7 +23,6 @@ CREATE TABLE albums (
     tracks INTEGER NOT NULL,
     is_public BOOLEAN NOT NULL,
     date_published DATE,
-    is_downloadable BOOLEAN NOT NULL,
     likes INTEGER DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id),
 	CONSTRAINT title_not_empty CHECK (title <> ''),
@@ -79,8 +78,8 @@ INSERT INTO users (email, name, password, role) VALUES
 	('a', 'a', 'a', 'artist'),
 	('r', 'r', 'r', 'regular');
 
-INSERT INTO albums (user_id, title, cover_art, tracks, is_public, is_downloadable) VALUES
-	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, true, false);
+INSERT INTO albums (user_id, title, cover_art, tracks, is_public) VALUES
+	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, true);
 
 INSERT INTO tracks (title, duration, album_id) VALUES
 	('Erland Dryselius', '03:20', 1);

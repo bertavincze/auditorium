@@ -31,8 +31,6 @@ public interface AlbumDao {
 
     void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException;
 
-    void updateAlbumDownloadabilityById(int id, boolean isDownloadable) throws SQLException;
-
     void likeAlbumById(int id) throws SQLException;
 
     void deleteAlbumById(int id) throws SQLException;

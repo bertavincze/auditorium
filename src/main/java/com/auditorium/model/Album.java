@@ -10,17 +10,15 @@ public final class Album extends AbstractModel {
     private final int tracks;
     private final List<Track> trackList;
     private final boolean isPublic;
-    private final boolean isDownloadable;
     private final int likes;
 
-    public Album(int id, String title, String art, int tracks, boolean isPublic, boolean isDownloadable) {
+    public Album(int id, String title, String art, int tracks, boolean isPublic) {
         super(id);
         this.title = title;
         this.art = art;
         this.tracks = tracks;
         this.trackList = new ArrayList<>();
         this.isPublic = isPublic;
-        this.isDownloadable = isDownloadable;
         this.likes = 0;
     }
 
@@ -42,10 +40,6 @@ public final class Album extends AbstractModel {
 
     public boolean isPublic() {
         return isPublic;
-    }
-
-    public boolean isDownloadable() {
-        return isDownloadable;
     }
 
     public int getLikes() {

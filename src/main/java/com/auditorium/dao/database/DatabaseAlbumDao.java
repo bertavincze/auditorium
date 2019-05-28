@@ -74,11 +74,6 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
-    public void updateAlbumDownloadabilityById(int id, boolean isDownloadable) throws SQLException {
-
-    }
-
-    @Override
     public void likeAlbumById(int id) throws SQLException {
 
     }
