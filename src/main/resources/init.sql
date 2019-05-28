@@ -47,6 +47,16 @@ CREATE TABLE favourites (
     FOREIGN KEY (album_id) REFERENCES albums(id)
 );
 
+CREATE TABLE album_ratings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE NOT NULL,
+    album_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (album_id) REFERENCES albums(id),
+    CONSTRAINT check_rating_between_bounds CHECK (rating >= 1 AND rating <= 10)
+);
+
 CREATE OR REPLACE FUNCTION set_date_published()
 RETURNS TRIGGER AS
     'BEGIN
@@ -86,3 +96,6 @@ INSERT INTO tracks (title, duration, album_id) VALUES
 
 INSERT INTO favourites (user_id, album_id) VALUES
     (2, 1);
+
+INSERT INTO album_ratings (user_id, album_id, rating) VALUES
+	(1, 1, 10);
