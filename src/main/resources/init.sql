@@ -34,6 +34,7 @@ CREATE TABLE albums (
 CREATE TABLE tracks (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
+	duration TIME NOT NULL,
     album_id INTEGER NOT NULL,
     FOREIGN KEY (album_id) REFERENCES albums(id),
     CONSTRAINT title_not_empty CHECK (title <> '')
@@ -79,10 +80,10 @@ INSERT INTO users (email, name, password, role) VALUES
 	('r', 'r', 'r', 'regular');
 
 INSERT INTO albums (user_id, title, cover_art, tracks, is_public, is_downloadable) VALUES
-	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, false, false);
+	('1', 'Boker Rocks', 'https://picsum.photos/800/600?random=1', 1, true, false);
 
-INSERT INTO tracks (title, album_id) VALUES
-	('Erland Dryselius', 1);
+INSERT INTO tracks (title, duration, album_id) VALUES
+	('Erland Dryselius', '03:20', 1);
 
 INSERT INTO favourites (user_id, album_id) VALUES
     (2, 1);
