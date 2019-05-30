@@ -23,6 +23,17 @@ public final class Album extends AbstractModel {
         this.likes = likes;
     }
 
+    public Album(int id, int userId, String title, String art, int tracks, boolean isPublic, int likes) {
+        super(id);
+        this.userId = userId;
+        this.title = title;
+        this.art = art;
+        this.tracks = tracks;
+        this.isPublic = isPublic;
+        this.datePublished = null;
+        this.likes = likes;
+    }
+
     public int getUserId() {
         return userId;
     }
