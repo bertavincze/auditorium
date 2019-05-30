@@ -4,7 +4,9 @@ import com.auditorium.dao.AlbumDao;
 import com.auditorium.model.Album;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
@@ -81,5 +83,21 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     @Override
     public void deleteAlbumById(int id) throws SQLException {
 
+    }
+
+    private Album fetchAlbum(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        int userId = resultSet.getInt("user_id");
+        String title = resultSet.getString("title");
+        String art = resultSet.getString("art");
+        int tracks = resultSet.getInt("tracks");
+        boolean isPublic = resultSet.getBoolean("is_public");
+        int likes = resultSet.getInt("likes");
+        if (resultSet.getDate("date_published") == null) {
+            return new Album(id, userId, title, art, tracks, isPublic, likes);
+        } else {
+            LocalDate datePublished = LocalDate.ofEpochDay(resultSet.getDate("date_published").getTime());
+            return new Album(id, userId, title, art, tracks, isPublic, datePublished, likes);
+        }
     }
 }
