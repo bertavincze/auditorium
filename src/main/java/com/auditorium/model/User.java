@@ -7,12 +7,14 @@ public final class User extends AbstractModel {
     private final String name;
     private final String email;
     private final String password;
+    private final String role;
 
-    public User(int id, String name, String email, String password) {
+    public User(int id, String name, String email, String password, String role) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getName() {
@@ -25,6 +27,10 @@ public final class User extends AbstractModel {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     @Override
