@@ -1,25 +1,30 @@
 package com.auditorium.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 public final class Album extends AbstractModel {
 
+    private final int userId;
     private final String title;
     private final String art;
     private final int tracks;
-    private final List<Track> trackList;
     private final boolean isPublic;
+    private final LocalDate datePublished;
     private final int likes;
 
-    public Album(int id, String title, String art, int tracks, boolean isPublic) {
+    public Album(int id, int userId, String title, String art, int tracks, boolean isPublic, LocalDate datePublished, int likes) {
         super(id);
+        this.userId = userId;
         this.title = title;
         this.art = art;
         this.tracks = tracks;
-        this.trackList = new ArrayList<>();
         this.isPublic = isPublic;
-        this.likes = 0;
+        this.datePublished = datePublished;
+        this.likes = likes;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getTitle() {
@@ -34,10 +39,6 @@ public final class Album extends AbstractModel {
         return tracks;
     }
 
-    public List<Track> getTrackList() {
-        return trackList;
-    }
-
     public boolean isPublic() {
         return isPublic;
     }
@@ -46,10 +47,7 @@ public final class Album extends AbstractModel {
         return likes;
     }
 
-    public void addTrack(Track track) {
-        if (trackList.size() != tracks) {
-            trackList.add(track);
-        }
+    public LocalDate getDatePublished() {
+        return datePublished;
     }
-
 }
