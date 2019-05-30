@@ -1,12 +1,14 @@
 package com.auditorium.model;
 
+import java.time.LocalTime;
+
 public final class Track extends AbstractModel {
 
     private final String title;
-    private final int duration;
+    private final LocalTime duration;
     private final int albumId;
 
-    public Track(int id, String title, int duration, int albumId) {
+    public Track(int id, String title, LocalTime duration, int albumId) {
         super(id);
         this.title = title;
         this.duration = duration;
@@ -17,7 +19,7 @@ public final class Track extends AbstractModel {
         return title;
     }
 
-    public int getDuration() {
+    public LocalTime getDuration() {
         return duration;
     }
 
