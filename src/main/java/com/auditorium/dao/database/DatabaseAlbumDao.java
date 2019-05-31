@@ -18,8 +18,24 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
-    public void addAlbum(String name, String email, String password, String role) throws SQLException {
-
+    public void addAlbum(int userId, String title, String cover_art, int tracks, boolean isPublic) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO albums(user_id, title, cover_art, tracks, is_public) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setString(2, title);
+            statement.setString(3, cover_art);
+            statement.setInt(4, tracks);
+            statement.setBoolean(5, isPublic);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     @Override

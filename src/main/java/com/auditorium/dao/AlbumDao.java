@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AlbumDao {
 
-    void addAlbum(String name, String email, String password, String role) throws SQLException;
+    void addAlbum(int userId, String title, String cover_art, int tracks, boolean isPublic) throws SQLException;
 
     List<Album> findAll() throws SQLException;
 

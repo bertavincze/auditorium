@@ -17,8 +17,8 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
-    public void addAlbum(String name, String email, String password, String role) throws SQLException {
-
+    public void addAlbum(int userId, String title, String cover_art, int tracks, boolean isPublic) throws SQLException {
+        albumDao.addAlbum(userId, title, cover_art, tracks, isPublic);
     }
 
     @Override
