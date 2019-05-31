@@ -23,7 +23,10 @@ function onLoginResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setAuthorization(user);
-        onLoad();
+        document.getElementById('user-menu').style.display = 'block';
+        [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
+            element.style.display = 'none';
+        });
     } else {
         onOtherResponse(this);
     }
@@ -57,7 +60,10 @@ function onRegisterResponse() {
         const user = JSON.parse(this.responseText);
         alert('Thank you for registering ' + user.name + ' !');
         setAuthorization(user);
-        onLoad();
+        document.getElementById('user-menu').style.display = 'block';
+        [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
+            element.style.display = 'none';
+        });
     } else {
         onOtherResponse(this);
     }
