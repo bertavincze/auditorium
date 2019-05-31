@@ -1,6 +1,9 @@
 package com.auditorium.dao;
 
+import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
+import com.auditorium.model.Track;
+import com.auditorium.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,9 +22,15 @@ public interface AlbumDao {
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
+    List<AlbumDto> findAllAlbumDto() throws SQLException;
+
     Album findById(int id) throws SQLException;
 
     Album findByTitle(String title) throws SQLException;
+
+    User findArtistByAlbumUserId(int id) throws SQLException;
+
+    List<Track> findTracksByAlbumId(int id) throws SQLException;
 
     void updateAlbumTitleById(int id, String title) throws SQLException;
 

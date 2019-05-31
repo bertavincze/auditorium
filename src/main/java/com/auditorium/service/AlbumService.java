@@ -1,5 +1,6 @@
 package com.auditorium.service;
 
+import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
 
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ public interface AlbumService {
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
+    List<AlbumDto> findAllAlbumDto() throws SQLException;
+
     Album findById(int id) throws SQLException;
 
     Album findByTitle(String title) throws SQLException;
@@ -30,8 +33,6 @@ public interface AlbumService {
     void updateAlbumTracksById(int id, int tracks) throws SQLException;
 
     void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException;
-
-    void updateAlbumDownloadabilityById(int id, boolean isDownloadable) throws SQLException;
 
     void likeAlbumById(int id) throws SQLException;
 

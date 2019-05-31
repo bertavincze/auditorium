@@ -1,6 +1,7 @@
 package com.auditorium.service.simple;
 
 import com.auditorium.dao.AlbumDao;
+import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
 import com.auditorium.service.AlbumService;
 
@@ -27,7 +28,7 @@ public class SimpleAlbumService implements AlbumService {
 
     @Override
     public List<Album> findAllPublic() throws SQLException {
-        return null;
+        return albumDao.findAllPublic();
     }
 
     @Override
@@ -43,6 +44,11 @@ public class SimpleAlbumService implements AlbumService {
     @Override
     public List<Album> findAllByUserId(int userId) throws SQLException {
         return null;
+    }
+
+    @Override
+    public List<AlbumDto> findAllAlbumDto() throws SQLException {
+        return albumDao.findAllAlbumDto();
     }
 
     @Override
@@ -72,11 +78,6 @@ public class SimpleAlbumService implements AlbumService {
 
     @Override
     public void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException {
-
-    }
-
-    @Override
-    public void updateAlbumDownloadabilityById(int id, boolean isDownloadable) throws SQLException {
 
     }
 

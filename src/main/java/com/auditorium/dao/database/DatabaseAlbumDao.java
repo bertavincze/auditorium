@@ -1,12 +1,14 @@
 package com.auditorium.dao.database;
 
 import com.auditorium.dao.AlbumDao;
+import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
+import com.auditorium.model.Track;
+import com.auditorium.model.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
@@ -27,7 +29,14 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public List<Album> findAllPublic() throws SQLException {
-        return null;
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE is_public = true";
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                albums.add(fetchAlbum(resultSet));
+            }
+            return albums;
+        }
     }
 
     @Override
@@ -46,6 +55,18 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
+    public List<AlbumDto> findAllAlbumDto() throws SQLException {
+        List<AlbumDto> allAlbumDtos = new ArrayList<>();
+        List<Album> albums = findAllPublic();
+        for (Album album : albums) {
+            String artist = findArtistByAlbumUserId(album.getUserId()).getName();
+            List<Track> tracks = findTracksByAlbumId(album.getId());
+            allAlbumDtos.add(new AlbumDto(artist, album, tracks));
+        }
+        return allAlbumDtos;
+    }
+
+    @Override
     public Album findById(int id) throws SQLException {
         return null;
     }
@@ -53,6 +74,45 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     @Override
     public Album findByTitle(String title) throws SQLException {
         return null;
+    }
+
+    @Override
+    public User findArtistByAlbumUserId(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("role")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Track> findTracksByAlbumId(int id) throws SQLException {
+        List<Track> tracks = new ArrayList<>();
+        String sql = "SELECT * FROM tracks WHERE album_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    tracks.add(new Track(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getTime("duration").toLocalTime(),
+                        resultSet.getInt("album_id")
+                        ));
+                }
+                return tracks;
+            }
+        }
     }
 
     @Override
@@ -89,14 +149,14 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
         int id = resultSet.getInt("id");
         int userId = resultSet.getInt("user_id");
         String title = resultSet.getString("title");
-        String art = resultSet.getString("art");
+        String art = resultSet.getString("cover_art");
         int tracks = resultSet.getInt("tracks");
         boolean isPublic = resultSet.getBoolean("is_public");
         int likes = resultSet.getInt("likes");
         if (resultSet.getDate("date_published") == null) {
             return new Album(id, userId, title, art, tracks, isPublic, likes);
         } else {
-            LocalDate datePublished = LocalDate.ofEpochDay(resultSet.getDate("date_published").getTime());
+            LocalDate datePublished = resultSet.getDate("date_published").toLocalDate();
             return new Album(id, userId, title, art, tracks, isPublic, datePublished, likes);
         }
     }
