@@ -7,6 +7,7 @@ import com.auditorium.service.UserService;
 import com.auditorium.service.exception.ServiceException;
 import com.auditorium.service.simple.SimpleUserService;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,16 @@ public final class LoginServlet extends AbstractServlet {
             sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getSession().getAttribute("user");
+        if (user != null) {
+            sendMessage(resp, HttpServletResponse.SC_OK, user);
+        } else {
+            sendMessage(resp, HttpServletResponse.SC_UNAUTHORIZED, null);
         }
     }
 }
