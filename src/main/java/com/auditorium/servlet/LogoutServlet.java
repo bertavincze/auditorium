@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/protected/logout")
-public final class LogoutServlet extends HttpServlet {
+public final class LogoutServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        resp.setStatus(HttpServletResponse.SC_OK);
+        sendMessage(resp, HttpServletResponse.SC_OK, "Logged out.");
     }
 }
