@@ -11,7 +11,7 @@ function onLogoutResponse() {
         setUnauthorized();
         const response = JSON.parse(this.responseText);
         alert(response.message);
-        onLoad();
+        document.location.reload();
     } else {
         onOtherResponse(this);
     }
