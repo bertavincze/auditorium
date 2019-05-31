@@ -12,6 +12,12 @@ let content;
 let contentView;
 let footer;
 
+function removeAllChildren(el) {
+    while (el.lastChild) {
+        el.lastChild.remove();
+    }
+}
+
 function hasAuthorization() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('error', onNetworkError);
@@ -78,6 +84,8 @@ function onLoad() {
     contentView = document.getElementById('content-view-page');
     footer = document.getElementById('footer');
 
+    removeAllChildren(content);
+
     loadAlbums();
     createMasonryDisplay();
 
@@ -109,11 +117,11 @@ function onLoad() {
         };
     });
 
-    if (hasAuthorization()) {
+    if (hasAuthorization() === true) {
+        document.getElementById('user-menu').style.display = 'block';
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'none';
         });
-        document.getElementById('user-menu').style.display = 'block';
     } else {
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'block';
