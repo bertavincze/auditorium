@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>Auditorium</title>
+    <link href="resources/favicon.png" rel="shortcut icon">
+
+    <!-- Style sheets -->
+    <link href="resources/icons.css" rel="stylesheet">
+    <link href="resources/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Major+Mono+Display|Raleway&display=swap" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="resources/js/masonry.js"></script>
+    <script type="text/javascript" src="resources/js/imagesloaded.js"></script>
+    <script type="text/javascript" src="resources/js/index.js"></script>
+    <script type="text/javascript" src="resources/js/login.js"></script>
+    <script type="text/javascript" src="resources/js/logout.js"></script>
+    <script type="text/javascript" src="resources/js/albums.js"></script>
+
+    </head>
+
+<body>
+
+    <!-- HEAD -->
+
+    <header id="head" style="right: 0px;">
+        <div class="head-title">
+            <h2><a href="javascript:void(0)">AuDiTori.UM</a></h2>
+        </div>
+
+        <div class="head-nav" id="head-nav">
+            <ul>
+                <li>
+                    <a href="javascript:void(0)">Home<span class="nav-line"></span></a>
+                </li>
+                <li>
+                    <a id="head-sign-in" href="javascript:void(0)">Sign in<span class="nav-line"></span></a>
+                </li>
+                <li>
+                    <a id="head-sign-up" href="javascript:void(0)">Create account<span class="nav-line"></span></a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="menu-button" class="menu-btn">
+            <i class="fa fa-reorder"></i>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+
+    <section id="sidebar" style="right: -300px;">
+        <div id="sidebar-content">
+            <nav id="side-nav-i" class="navigation">
+                <h2>Navigation</h2>
+                <ul>
+                    <li>
+                        <a href="javascript:void(0)">Home<span class="nav-line-white"></span></a>
+                    </li>
+                    <li>
+                        <a id="nav-sign-in" href="javascript:void(0)">Sign in<span class="nav-line-white"></span></a>
+                    </li>
+                    <li>
+                        <a id="nav-sign-up" href="javascript:void(0)">Create account<span class="nav-line-white"></span></a>
+                    </li>                  
+                </ul>
+            </nav>
+
+            <nav id="side-nav-ii" class="navigation">
+                
+                <form id="register-form" onsubmit="return false;">
+                    <h2>Create account</h2>
+                    <input type="text" placeholder="Name" name="register-input-name" id="register-input-name" maxlength="20">
+                    <input type="text" placeholder="Email" name="register-input-email" id="register-input-email">
+                    <input type="password" placeholder="Password" name="register-input-password" id="register-input-password">
+                    <a id="register-submit" href="javascript:void(0)" onclick="onRegisterButtonClicked()">Sign up <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
+                </form>
+                <form id="login-form" onsubmit="return false;">
+                    <h2>Sign in</h2>
+                    <input type="text" placeholder="Email" name="login-input-email" id="login-input-email">
+                    <input type="password" placeholder="Password" name="login-input-password" id="lgin-input-password">
+                    <a id="login-submit" href="javascript:void(0)" onclick="onLoginButtonClicked()">Sign in <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
+                </form>
+
+                <ul id="user-menu">
+                    <h2>Welcome!</h2>
+                    <li>
+                        <a href="javascript:void(0)">My Profile<span class="nav-line-white"></span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="onLogoutClicked()">Sign out<span class="nav-line-white"></span></a>
+                    </li>                  
+                </ul>
+            </nav>
+
+        </div>
+    </section>
+
+    <!-- CONTENT GRID -->
+    <section id="sort-menu">
+            <p>Sort by: 
+                <a id="most-liked-link" href="javascript:void(0)">
+                    Most popular <i class="fa fa-caret-down"></i>
+                </a>
+                <a id="newest-link" href="javascript:void(0)">
+                    Newest first <i class="fa fa-caret-down"></i>
+                </a>
+            </p>
+        </section>
+    <section id="content" class="masonry">
+
+    </section>
+
+    <!-- CONTENT VIEW ONE DIV -->
+
+    <section id="content-view-page">
+
+    </section>
+
+    <footer id="footer">
+        <a id="back-to-top-btn" href="javascript:void(0)" onclick="backToTop()"><i class="fa fa-arrow-up"></i></a>
+    </footer>
+
+</body>
+</html>
