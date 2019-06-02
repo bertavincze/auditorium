@@ -15,7 +15,6 @@
 
     <!-- Scripts -->
     <script type="text/javascript" src="resources/js/masonry.js"></script>
-    <script type="text/javascript" src="resources/js/imagesloaded.js"></script>
     <script type="text/javascript" src="resources/js/index.js"></script>
     <script type="text/javascript" src="resources/js/login.js"></script>
     <script type="text/javascript" src="resources/js/logout.js"></script>
@@ -35,7 +34,7 @@
         <div class="head-nav" id="head-nav">
             <ul>
                 <li>
-                    <a href="javascript:void(0)">Home<span class="nav-line"></span></a>
+                    <a id="head-home" onclick="onLoad()" href="javascript:void(0)">Home<span class="nav-line"></span></a>
                 </li>
                 <li>
                     <a id="head-sign-in" href="javascript:void(0)">Sign in<span class="nav-line"></span></a>
@@ -59,7 +58,7 @@
                 <h2>Navigation</h2>
                 <ul>
                     <li>
-                        <a href="javascript:void(0)">Home<span class="nav-line-white"></span></a>
+                        <a id="nav-home" onclick="onLoad()" href="javascript:void(0)">Home<span class="nav-line-white"></span></a>
                     </li>
                     <li>
                         <a id="nav-sign-in" href="javascript:void(0)">Sign in<span class="nav-line-white"></span></a>

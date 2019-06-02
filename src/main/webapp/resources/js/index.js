@@ -12,6 +12,14 @@ let content;
 let contentView;
 let footer;
 
+function hideElementById(el) {
+    el.style.display = 'none';
+}
+
+function showElementById(el) {
+    el.style.display = 'block';
+}
+
 function removeAllChildren(el) {
     while (el.lastChild) {
         el.lastChild.remove();
@@ -83,18 +91,17 @@ function onLoad() {
     content = document.getElementById('content');
     contentView = document.getElementById('content-view-page');
     footer = document.getElementById('footer');
-
+    
     removeAllChildren(content);
+    removeAllChildren(contentView);
 
     loadAlbums();
-    createMasonryDisplay();
 
     [document.body, head, sortMenu, content, contentView, footer].forEach(function(element) {
         element.addEventListener('click', onOtherElementClicked);
     });
 
     window.addEventListener('scroll', onScroll);
-    window.addEventListener('load', createMasonryDisplay);
     menuButton.addEventListener('click', onMenuButtonClicked);
 
     [menuButton, sidebar].forEach(function(element) {
@@ -132,15 +139,12 @@ function onLoad() {
 }
 
 function createMasonryDisplay() {
-    content.style.display = 'block';
-    imagesLoaded(content, { background: '.grid' }, function() {
-        const elem = document.querySelector('.masonry');
-        const masonry = new Masonry(elem, {
-        fitWidth: true,
-        isAnimated: true,
-        itemSelector: '.grid',
-        columnWidth: 90
-        });
+    const elem = document.querySelector('.masonry');
+    masonry = new Masonry(elem, {
+    fitWidth: true,
+    isAnimated: true,
+    itemSelector: '.grid',
+    columnWidth: 90
     });
 }
 

@@ -387,13 +387,87 @@ h5 {
 
 /* CONTENT ONE DIV */
 
-.content-view-page {
-    display: none;
+#content-view-page {
+    display: block;
     position: relative;
     right: 0;
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
 }
+
+#album-details-view {
+    width: inherit;
+    margin: 0 auto;
+}
+
+#album-details-view table, #album-details-view td {
+    border: none;
+    vertical-align: top;
+}
+
+.album-cover-full {
+    display: block;
+    width: 600px;
+    height: 500px;
+    background: url('https://picsum.photos/id/76/800/600');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.album-cover-full-overlay {
+    display: block;
+    position: absolute;
+    z-index: 99;
+    width: inherit;
+    height: inherit;
+    background-color: transparent;
+    text-transform: capitalize;
+}
+
+.album-cover-full-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.album-cover-full-overlay p {
+    padding-top: 400px; 
+    margin: 0 10px 10px 10px;
+    font-family: 'Oswald', sans-serif;
+    text-align: left;
+    font-size: 26px;
+    color: #ffffff;
+    text-shadow: -3px 3px 5px #000;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.tracklist {
+    padding-left: 30px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+#content-view-page h2 {
+    padding-left: 15px;
+    color: #ffffff;
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.album-info {
+    padding-left: 15px;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: normal;
+    padding-bottom: 20px;
+    text-transform: capitalize;
+}
+
 
 /* FOOTER */
 
