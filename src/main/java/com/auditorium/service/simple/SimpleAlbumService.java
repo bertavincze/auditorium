@@ -3,6 +3,8 @@ package com.auditorium.service.simple;
 import com.auditorium.dao.AlbumDao;
 import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
+import com.auditorium.model.Track;
+import com.auditorium.model.User;
 import com.auditorium.service.AlbumService;
 
 import java.sql.SQLException;
@@ -53,12 +55,22 @@ public class SimpleAlbumService implements AlbumService {
 
     @Override
     public Album findById(int id) throws SQLException {
-        return null;
+        return albumDao.findById(id);
     }
 
     @Override
     public Album findByTitle(String title) throws SQLException {
         return null;
+    }
+
+    @Override
+    public User findArtistByAlbumUserId(int id) throws SQLException {
+        return albumDao.findArtistByAlbumUserId(id);
+    }
+
+    @Override
+    public List<Track> findTracksByAlbumId(int id) throws SQLException {
+        return albumDao.findTracksByAlbumId(id);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.auditorium.service;
 
 import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
+import com.auditorium.model.Track;
+import com.auditorium.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +27,10 @@ public interface AlbumService {
     Album findById(int id) throws SQLException;
 
     Album findByTitle(String title) throws SQLException;
+
+    User findArtistByAlbumUserId(int id) throws SQLException;
+
+    List<Track> findTracksByAlbumId(int id) throws SQLException;
 
     void updateAlbumTitleById(int id, String title) throws SQLException;
 

@@ -84,6 +84,15 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public Album findById(int id) throws SQLException {
+        String sql = "SELECT * FROM albums WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchAlbum(resultSet);
+                }
+            }
+        }
         return null;
     }
 
