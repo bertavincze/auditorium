@@ -5,8 +5,6 @@ import com.auditorium.model.User;
 import com.auditorium.service.UserService;
 import com.auditorium.service.exception.ServiceException;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,14 +25,14 @@ public final class SimpleUserService implements UserService {
                 throw new ServiceException("Bad login!");
             }
             return user;
-        } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
+        } catch (IllegalArgumentException ex) {
             throw new ServiceException(ex.getMessage());
         }
     }
 
     @Override
     public void addUser(String name, String email, String password, String role) throws SQLException {
-
+        userDao.addUser(name, email, password, role);
     }
 
     @Override
@@ -49,7 +47,7 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public User findByEmail(String email) throws SQLException {
-        return null;
+        return userDao.findByEmail(email);
     }
 
     @Override
