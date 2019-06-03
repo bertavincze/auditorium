@@ -27,12 +27,27 @@ function removeAllChildren(el) {
 }
 
 function hasAuthorization() {
+    checkAuth();
+    if (getCurrentUser() != null) {
+        return true;
+    }
+}
+
+function checkAuth() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', onAuthResponse);
     xhr.open('GET', 'login');
     xhr.send();
-    if (xhr.status === OK) {
-      return true;
+}
+
+function onAuthResponse() {
+    if (this.status === OK) {
+        setAuthorization(this.responseText);
+        return true;
+    } else {
+        setUnauthorized();
+        return false;
     }
 }
 
@@ -123,7 +138,7 @@ function onLoad() {
             event.stopPropagation();
         };
     });
-
+    debugger;
     if (hasAuthorization() === true) {
         document.getElementById('user-menu').style.display = 'block';
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
