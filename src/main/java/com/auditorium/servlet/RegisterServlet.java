@@ -2,7 +2,9 @@ package com.auditorium.servlet;
 
 import com.auditorium.dao.UserDao;
 import com.auditorium.dao.database.DatabaseUserDao;
+import com.auditorium.model.User;
 import com.auditorium.service.UserService;
+import com.auditorium.service.exception.ServiceException;
 import com.auditorium.service.simple.SimplePasswordService;
 import com.auditorium.service.simple.SimpleUserService;
 
@@ -25,11 +27,17 @@ public class RegisterServlet extends AbstractServlet {
 
             String name = req.getParameter("name");
             String email = req.getParameter("email");
-            String password = req.getParameter("password");
+            String password = passwordService.getHashedPassword(req.getParameter("password"));
             String role = req.getParameter("role");
 
+            userService.addUser(name, email, password, role);
+            User user = userService.findByEmail(email);
+            req.getSession().setAttribute("user", user);
+            sendMessage(resp, HttpServletResponse.SC_OK, user);
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
+        } catch (ServiceException e) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 }
