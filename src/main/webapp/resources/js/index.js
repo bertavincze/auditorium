@@ -140,11 +140,17 @@ function onLoad() {
     });
     debugger;
     if (hasAuthorization() === true) {
+        [document.getElementById('head-profile'), document.getElementById('head-sign-out')].forEach(function(element) {
+            element.style.display = 'inline-block';
+        });
         document.getElementById('user-menu').style.display = 'block';
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'none';
         });
     } else {
+        [document.getElementById('head-profile'), document.getElementById('head-sign-out')].forEach(function(element) {
+            element.style.display = 'none';
+        });
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'block';
         });

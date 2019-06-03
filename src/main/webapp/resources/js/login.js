@@ -23,6 +23,9 @@ function onLoginResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setAuthorization(user);
+        [document.getElementById('head-profile'), document.getElementById('head-sign-out')].forEach(function(element) {
+            element.style.display = 'inline-block';
+        });
         document.getElementById('user-menu').style.display = 'block';
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'none';
@@ -60,6 +63,9 @@ function onRegisterResponse() {
         const user = JSON.parse(this.responseText);
         alert('Thank you for registering ' + user.name + ' !');
         setAuthorization(user);
+        [document.getElementById('head-profile'), document.getElementById('head-sign-out')].forEach(function(element) {
+            element.style.display = 'inline-block';
+        });
         document.getElementById('user-menu').style.display = 'block';
         [document.getElementById('register-form'), document.getElementById('login-form')].forEach(function(element) {
             element.style.display = 'none';
