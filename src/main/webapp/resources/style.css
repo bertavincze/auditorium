@@ -249,7 +249,7 @@ h5 {
     width: 0;
 }
 
-.navigation input[type=text], .navigation input[type=password] {
+.navigation input[type=text], .navigation input[type=password], .navigation input[type=email] {
     margin: 10px;
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -261,7 +261,7 @@ h5 {
     color: #444444;
 }
 
-.navigation input[type=text]:focus, .navigation input[type=password]:focus {
+.navigation input[type=text]:focus, .navigation input[type=password]:focus, .navigation input[type=email]:focus {
     color: #000000;
 }
 
