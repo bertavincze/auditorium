@@ -41,6 +41,7 @@ function onRegisterButtonClicked() {
     const nameInputEl = registerFormEl.querySelector('input[name="register-input-name"]');
     const emailInputEl = registerFormEl.querySelector('input[name="register-input-email"]');
     const passwordInputEl = registerFormEl.querySelector('input[name="register-input-password"]');
+    const roleInputEl = registerFormEl.querySelector('input[name="register-input-role"]');
 
     const name = nameInputEl.value;
     const email = emailInputEl.value;
@@ -50,6 +51,12 @@ function onRegisterButtonClicked() {
     params.append('name', name);
     params.append('email', email);
     params.append('password', password);
+
+    if (roleInputEl.checked) {
+        params.append('role', roleInputEl.value);
+    } else {
+        params.append('role', 'regular');    
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onRegisterResponse);

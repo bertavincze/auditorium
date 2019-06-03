@@ -185,6 +185,7 @@ h5 {
     height: 100%;
     background-color: #821B1A;
     font-family: 'Raleway', sans-serif;
+    color: #ffffff;
     background-image: url('foggy-birds.png');
 }
 
@@ -264,6 +265,39 @@ h5 {
 .navigation input[type=text]:focus, .navigation input[type=password]:focus, .navigation input[type=email]:focus {
     color: #000000;
 }
+
+input[type=checkbox] {
+    display: none;
+}
+
+label div {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    border: 2px solid #fff;
+    text-align: center;
+    line-height: 0.5;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+label i {
+    font-size: 14px;
+    opacity: 0;
+}
+
+label:hover div {
+    background: #821B1A;
+}
+
+input:checked + label i {
+    opacity: 1;
+}
+
+input:checked + label div {
+    background: #821B1A;
+} 
 
 /* CONTENT GRID */
 
