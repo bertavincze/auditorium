@@ -117,6 +117,17 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
+    public void setAlbumLikesByUser(User user, List<AlbumDto> albums) throws SQLException {
+        if (user != null) {
+            for (AlbumDto albumDto : albums) {
+                if (isAlbumLikedByUser(user.getId(), albumDto.getAlbum().getId())) {
+                    albumDto.setLiked(true);
+                }
+            }
+        }
+    }
+
+    @Override
     public void deleteAlbumById(int id) throws SQLException {
         albumDao.deleteAlbumById(id);
     }

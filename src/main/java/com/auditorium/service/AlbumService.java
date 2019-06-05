@@ -42,5 +42,7 @@ public interface AlbumService {
 
     boolean isAlbumLikedByUser(int userId, int albumId) throws SQLException;
 
+    void setAlbumLikesByUser(User user, List<AlbumDto> albums) throws SQLException;
+
     void deleteAlbumById(int id) throws SQLException;
 }
