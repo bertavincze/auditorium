@@ -1,8 +1,32 @@
+let timer;
+
 function loadAlbums() {
+    const params = new URLSearchParams();
+    params.append('sort', 'none');
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('error', onNetworkError);
     xhr.addEventListener('load', onAlbumsResponse);
-    xhr.open('GET', 'albums');
+    xhr.open('GET', 'albums?' + params.toString());
+    xhr.send();
+}
+
+function loadNewestAlbums() {
+    const params = new URLSearchParams();
+    params.append('sort', 'date');
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', onAlbumsResponse);
+    xhr.open('GET', 'albums?' + params.toString());
+    xhr.send();
+}
+
+function loadMostLikedAlbums() {
+    const params = new URLSearchParams();
+    params.append('sort', 'likes');
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', onAlbumsResponse);
+    xhr.open('GET', 'albums?' + params.toString());
     xhr.send();
 }
 
@@ -16,9 +40,12 @@ function onAlbumsResponse() {
 }
 
 function onAlbumsReceived(albumDtoList) {
+    removeAllChildren(content);
+
     [sortMenu, content].forEach(function(element) {
         showElementById(element);
     });
+
     for (let i = 0; i < albumDtoList.length; i++) {
         const albumDto = albumDtoList[i];
         const newBrickEl = document.createElement('div');
@@ -54,10 +81,10 @@ function createAlbumThumbnailButtons(albumDto) {
     const footerButtonsEl = document.createElement('div');
     footerButtonsEl.className = 'thumbnail-footer-buttons';
 
-    const icons = ['fa fa-external-link', 'fa fa-play', 'fa fa-fast-forward',
+    const icons = ['fa fa-external-link', 'fa fa-play', 'fa fa-pause', 'fa fa-forward',
                         'fa fa-heart', 'fa fa-list-ul', 'fa fa-facebook', 'fa fa-twitter'];
 
-    const functions = [onExternalLinkClicked, onPlayClicked, onFastForwardClicked, 
+    const functions = [onExternalLinkClicked, onPlayClicked, onPauseClicked, onForwardClicked, 
                       onLikeClicked, onFavListClicked, onFacebookClicked, onTwitterClicked];
 
     const ulEl = document.createElement('ul');
@@ -65,11 +92,14 @@ function createAlbumThumbnailButtons(albumDto) {
     for (let i = 0; i < icons.length; i++) {
         const liEl = document.createElement('li');
         const aEl = document.createElement('a');
-        aEl.href = 'javascript:void(0)';
         aEl.addEventListener('click', functions[i]);
-        aEl.setAttribute('id', albumDto.album.id);
+        liEl.setAttribute('id', icons[i] + '-' + albumDto.album.id);
+        aEl.setAttribute('album-id', albumDto.album.id);
         const iconEl = document.createElement('i');
         iconEl.className = icons[i];
+        if (icons[i] === 'fa fa-pause') {
+            liEl.style.display = 'none';
+        }
         aEl.appendChild(iconEl);
         liEl.appendChild(aEl);
         ulEl.appendChild(liEl);
@@ -83,7 +113,7 @@ function createAlbumThumbnailButtons(albumDto) {
 function onExternalLinkClicked() {
     const xhr = new XMLHttpRequest();
     const params = new URLSearchParams();
-    params.append('albumId', this.id);
+    params.append('albumId', this.getAttribute('album-id'));
     xhr.addEventListener('error', onNetworkError);
     xhr.addEventListener('load', onAlbumResponse);
     xhr.open('GET', 'album?' + params.toString());
@@ -183,11 +213,109 @@ function createAlbumInfoTdEl(albumDto) {
 }
 
 function onPlayClicked() {
-    // TODO
+    const xhr = new XMLHttpRequest();
+    const params = new URLSearchParams();
+    params.append('albumId', this.getAttribute('album-id'));
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', onPlayedAlbumResponse);
+    xhr.open('GET', 'album?' + params.toString());
+    xhr.send();
 }
 
-function onFastForwardClicked() {
-    // TODO
+function onPlayedAlbumResponse() {
+    if (this.status === OK) {
+        const albumDto = JSON.parse(this.responseText);
+        playAlbum(albumDto, 0);
+    } else {
+        onOtherResponse(this);
+    }
+}
+
+function playAlbum(albumDto, trackIndex) {
+    hideElementById(getPlayButtonByAlbum(albumDto.album.id));
+    showInlineElementById(getPauseButtonByAlbum(albumDto.album.id));
+    
+    const pEl = document.createElement('p');
+    removeAllChildren(nowPlaying);
+    nowPlaying.appendChild(pEl);
+    showElementById(nowPlaying);
+
+    (function playTrack() {
+        if (trackIndex < albumDto.tracks.length) {
+            setCurrentTrack(albumDto.tracks[trackIndex]);
+            pEl.textContent = 'Now playing - ' + albumDto.artist + ' - ' + albumDto.tracks[trackIndex].title +
+            ' - Album: ' + albumDto.album.title;
+            timer = setTimeout(playTrack, parseInt(albumDto.tracks[trackIndex].duration.second) * 1000);
+            trackIndex++;
+        } else {
+            clearTimeout(timer);
+            removeCurrentTrack();
+            removeAllChildren(nowPlaying);
+            hideElementById(nowPlaying);
+            hideElementById(getPauseButtonByAlbum(albumDto.album.id));
+            showInlineElementById(getPlayButtonByAlbum(albumDto.album.id));
+        }
+    })();
+}
+
+function getPlayButtonByAlbum(albumId) {
+    return document.getElementById('fa fa-play' + '-' + albumId);
+}
+
+function getPauseButtonByAlbum(albumId) {
+    return document.getElementById('fa fa-pause' + '-' + albumId);
+}
+
+function getCurrentTrack() {
+    return JSON.parse(localStorage.getItem('current-track'));
+}
+
+function setCurrentTrack(track) {
+    localStorage.setItem('current-track', JSON.stringify(track));
+}
+
+function removeCurrentTrack() {
+    localStorage.removeItem('current-track');
+}
+
+function onPauseClicked() {
+    if (getCurrentTrack() != null) {
+        clearTimeout(timer);
+        removeCurrentTrack();
+        removeAllChildren(nowPlaying);
+        hideElementById(nowPlaying);
+        hideElementById(getPauseButtonByAlbum(this.getAttribute('album-id')));
+        showInlineElementById(getPlayButtonByAlbum(this.getAttribute('album-id')));
+    }
+}
+
+function onForwardClicked() {
+    clearTimeout(timer);
+    const track = getCurrentTrack();
+    if (track != null && track.albumId == this.getAttribute('album-id')) {
+        const xhr = new XMLHttpRequest();
+        const params = new URLSearchParams();
+        params.append('albumId', this.getAttribute('album-id'));
+        xhr.addEventListener('error', onNetworkError);
+        xhr.addEventListener('load', onForwardResponse);
+        xhr.open('GET', 'album?' + params.toString());
+        xhr.send();
+    }
+}
+
+function onForwardResponse() {
+    if (this.status === OK) {
+        const albumDto = JSON.parse(this.responseText);
+        for (let i = 0; i < albumDto.tracks.length; i++) {
+            const track = albumDto.tracks[i];
+            if (track.id == getCurrentTrack().id) {
+                playAlbum(albumDto, ++i);
+                break;
+            }
+        }
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function onLikeClicked() {
