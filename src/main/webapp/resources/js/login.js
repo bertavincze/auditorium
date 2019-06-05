@@ -23,7 +23,7 @@ function onLoginResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setAuthorization(user);
-        document.location.reload();
+        onLoad();
     } else {
         onOtherResponse(this);
     }
@@ -64,7 +64,7 @@ function onRegisterResponse() {
         const user = JSON.parse(this.responseText);
         alert('Thank you for registering ' + user.name + ' !');
         setAuthorization(user);
-        document.location.reload();
+        onLoad();
     } else {
         onOtherResponse(this);
     }
