@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/albums")
 public final class AlbumsServlet extends AbstractServlet {
@@ -24,9 +23,16 @@ public final class AlbumsServlet extends AbstractServlet {
             AlbumDao albumDao = new DatabaseAlbumDao(connection);
             AlbumService albumService = new SimpleAlbumService(albumDao);
 
-            List<AlbumDto> albums = albumService.findAllAlbumDto();
+            String sortMethod = req.getParameter("sort");
 
-            sendMessage(resp, HttpServletResponse.SC_OK, albums);
+            if (sortMethod.equals("date")) {
+                sendMessage(resp, HttpServletResponse.SC_OK, albumService.sortByNewestFirst());
+            } else if (sortMethod.equals("likes")) {
+                sendMessage(resp, HttpServletResponse.SC_OK, albumService.sortByMostLikesFirst());
+            } else {
+                sendMessage(resp, HttpServletResponse.SC_OK, albumService.findAllAlbumDto());
+            }
+
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
         }
