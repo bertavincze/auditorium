@@ -37,12 +37,12 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public List<User> findAll() throws SQLException {
-        return null;
+        return userDao.findAll();
     }
 
     @Override
     public User findById(int id) throws SQLException {
-        return null;
+        return userDao.findById(id);
     }
 
     @Override
@@ -52,31 +52,31 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public User findByName(String name) throws SQLException {
-        return null;
+        return userDao.findByName(name);
     }
 
     @Override
     public void updateUserNameById(int id, String name) throws SQLException {
-
+        userDao.updateUserNameById(id, name);
     }
 
     @Override
     public void updateUserEmailById(int id, String email) throws SQLException {
-
+        userDao.updateUserEmailById(id, email);
     }
 
     @Override
     public void updateUserPasswordById(int id, String password) throws SQLException {
-
+        userDao.updateUserPasswordById(id, password);
     }
 
     @Override
     public void updateUserRoleById(int id, String role) throws SQLException {
-
+        userDao.updateUserRoleById(id, role);
     }
 
     @Override
     public void deleteUserById(int id) throws SQLException {
-
+        userDao.deleteUserById(id);
     }
 }

@@ -3,13 +3,11 @@ package com.auditorium.dao;
 import com.auditorium.model.Track;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalTime;
 
 public interface TrackDao {
 
-    void addTrack(String title, int duration, int albumId) throws SQLException;
-
-    List<Track> findAllByAlbumId(int albumId) throws SQLException;
+    void addTrack(String title, LocalTime duration, int albumId) throws SQLException;
 
     Track findById(int id) throws SQLException;
 
