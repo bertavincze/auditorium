@@ -28,25 +28,25 @@
 
     <header id="head" style="right: 0px;">
         <div class="head-title">
-            <h2><a href="javascript:void(0)">AuDiTori.UM</a></h2>
+            <h2><a>AuDiTori.UM</a></h2>
         </div>
 
         <div class="head-nav" id="head-nav">
             <ul>
                 <li>
-                    <a id="head-home" onclick="onLoad()" href="javascript:void(0)">Home<span class="nav-line"></span></a>
+                    <a id="head-home" onclick="onLoad()">Home<span class="nav-line"></span></a>
                 </li>
                 <li>
-                    <a id="head-sign-in" href="javascript:void(0)">Sign in<span class="nav-line"></span></a>
+                    <a id="head-sign-in">Sign in<span class="nav-line"></span></a>
                 </li>
                 <li>
-                    <a id="head-sign-up" href="javascript:void(0)">Create account<span class="nav-line"></span></a>
+                    <a id="head-sign-up">Create account<span class="nav-line"></span></a>
                 </li>
                 <li>
-                    <a id="head-profile" href="javascript:void(0)">My Profile<span class="nav-line"></span></a>
+                    <a id="head-profile">My Profile<span class="nav-line"></span></a>
                 </li>
                 <li>
-                    <a id="head-sign-out" onclick="onLogoutClicked()" href="javascript:void(0)">Sign out<span class="nav-line"></span></a>
+                    <a id="head-sign-out" onclick="onLogoutClicked()">Sign out<span class="nav-line"></span></a>
                 </li>
             </ul>
         </div>
@@ -64,13 +64,13 @@
                 <h2>Navigation</h2>
                 <ul>
                     <li>
-                        <a id="nav-home" onclick="onLoad()" href="javascript:void(0)">Home<span class="nav-line-white"></span></a>
+                        <a id="nav-home" onclick="onLoad()">Home<span class="nav-line-white"></span></a>
                     </li>
                     <li>
-                        <a id="nav-sign-in" href="javascript:void(0)">Sign in<span class="nav-line-white"></span></a>
+                        <a id="nav-sign-in">Sign in<span class="nav-line-white"></span></a>
                     </li>
                     <li>
-                        <a id="nav-sign-up" href="javascript:void(0)">Create account<span class="nav-line-white"></span></a>
+                        <a id="nav-sign-up">Create account<span class="nav-line-white"></span></a>
                     </li>                  
                 </ul>
             </nav>
@@ -88,23 +88,23 @@
                         <div><i class="fa fa-check"></i></div> I'm an artist
                     </label>
                     <br>
-                    <a id="register-submit" href="javascript:void(0)" onclick="onRegisterButtonClicked()">Sign up <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
+                    <a id="register-submit" onclick="onRegisterButtonClicked()">Sign up <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
                     <br>
                 </form>
                 <form id="login-form" onsubmit="return false;">
                     <h2>Sign in</h2>
                     <input type="email" placeholder="Email" name="login-input-email" id="login-input-email">
                     <input type="password" placeholder="Password" name="login-input-password" id="lgin-input-password">
-                    <a id="login-submit" href="javascript:void(0)" onclick="onLoginButtonClicked()">Sign in <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
+                    <a id="login-submit" onclick="onLoginButtonClicked()">Sign in <i class="fa fa-angle-double-right"></i><span class="nav-line-white"></span></a>
                 </form>
 
                 <ul id="user-menu">
                     <h2>Welcome!</h2>
                     <li>
-                        <a href="javascript:void(0)">My Profile<span class="nav-line-white"></span></a>
+                        <a>My Profile<span class="nav-line-white"></span></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" onclick="onLogoutClicked()">Sign out<span class="nav-line-white"></span></a>
+                        <a onclick="onLogoutClicked()">Sign out<span class="nav-line-white"></span></a>
                     </li>                  
                 </ul>
             </nav>
@@ -115,10 +115,10 @@
     <!-- CONTENT GRID -->
     <section id="sort-menu">
             <p>Sort by: 
-                <a id="most-liked-link" href="javascript:void(0)">
+                <a id="most-liked-link" onclick="loadMostLikedAlbums()">
                     Most popular <i class="fa fa-caret-down"></i>
                 </a>
-                <a id="newest-link" href="javascript:void(0)">
+                <a id="newest-link" onclick="loadNewestAlbums()">
                     Newest first <i class="fa fa-caret-down"></i>
                 </a>
             </p>
@@ -133,8 +133,16 @@
 
     </section>
 
+    <!-- NOW PLAYING BAR -->
+
+    <section id="now-playing-bar">
+        
+    </section>
+
+    <!-- FOOTER -->
+
     <footer id="footer">
-        <a id="back-to-top-btn" href="javascript:void(0)" onclick="backToTop()"><i class="fa fa-arrow-up"></i></a>
+        <a id="back-to-top-btn" onclick="backToTop()"><i class="fa fa-arrow-up"></i></a>
     </footer>
 
 </body>
