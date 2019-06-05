@@ -10,7 +10,9 @@ let sidebar;
 let menuButton;
 let content;
 let contentView;
+let nowPlaying;
 let footer;
+let currentTrack;
 
 function hideElementById(el) {
     el.style.display = 'none';
@@ -18,6 +20,10 @@ function hideElementById(el) {
 
 function showElementById(el) {
     el.style.display = 'block';
+}
+
+function showInlineElementById(el) {
+    el.style.display = 'inline-block';
 }
 
 function removeAllChildren(el) {
@@ -105,6 +111,7 @@ function onLoad() {
     menuButton = document.getElementById('menu-button');
     content = document.getElementById('content');
     contentView = document.getElementById('content-view-page');
+    nowPlaying = document.getElementById('now-playing-bar');
     footer = document.getElementById('footer');
     
     removeAllChildren(content);
@@ -138,7 +145,7 @@ function onLoad() {
             event.stopPropagation();
         };
     });
-    debugger;
+    
     if (hasAuthorization() === true) {
         [document.getElementById('head-profile'), document.getElementById('head-sign-out')].forEach(function(element) {
             element.style.display = 'inline-block';
