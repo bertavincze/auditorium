@@ -112,6 +112,11 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
+    public boolean isAlbumLikedByUser(int userId, int albumId) throws SQLException {
+        return albumDao.isAlbumLikedByUser(userId, albumId);
+    }
+
+    @Override
     public void deleteAlbumById(int id) throws SQLException {
         albumDao.deleteAlbumById(id);
     }

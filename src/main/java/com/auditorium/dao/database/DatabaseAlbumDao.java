@@ -239,6 +239,21 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
+    public boolean isAlbumLikedByUser(int userId, int albumId) throws SQLException {
+        String sql = "SELECT EXISTS(SELECT 1 FROM album_likes WHERE user_id = ? AND album_id = ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, albumId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean("exists");
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void deleteAlbumById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);

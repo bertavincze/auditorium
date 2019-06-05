@@ -37,5 +37,7 @@ public interface AlbumDao {
 
     void likeAlbumById(int id) throws SQLException;
 
+    boolean isAlbumLikedByUser(int userId, int albumId) throws SQLException;
+
     void deleteAlbumById(int id) throws SQLException;
 }
