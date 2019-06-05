@@ -222,12 +222,13 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
-    public void likeAlbumById(int id) throws SQLException {
+    public void likeAlbumById(int userId, int albumId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "UPDATE albums SET likes = likes + 1 WHERE id = ?";
+        String sql = "INSERT INTO album_likes(user_id, album_id) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
+            statement.setInt(2, albumId);
             executeInsert(statement);
             connection.commit();
         } catch (SQLException ex) {

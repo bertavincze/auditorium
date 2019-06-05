@@ -38,7 +38,7 @@ public interface AlbumService {
 
     void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException;
 
-    void likeAlbumById(int id) throws SQLException;
+    void likeAlbumById(int userId, int albumId) throws SQLException;
 
     boolean isAlbumLikedByUser(int userId, int albumId) throws SQLException;
 

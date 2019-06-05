@@ -107,8 +107,8 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
-    public void likeAlbumById(int id) throws SQLException {
-        albumDao.likeAlbumById(id);
+    public void likeAlbumById(int userId, int albumId) throws SQLException {
+        albumDao.likeAlbumById(userId, albumId);
     }
 
     @Override
