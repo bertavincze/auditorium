@@ -1,6 +1,5 @@
 package com.auditorium.dao;
 
-import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
 import com.auditorium.model.Track;
 import com.auditorium.model.User;
@@ -22,8 +21,6 @@ public interface AlbumDao {
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
-    List<AlbumDto> findAllAlbumDto() throws SQLException;
-
     Album findById(int id) throws SQLException;
 
     Album findByTitle(String title) throws SQLException;
@@ -35,8 +32,6 @@ public interface AlbumDao {
     void updateAlbumTitleById(int id, String title) throws SQLException;
 
     void updateAlbumArtById(int id, String artUrl) throws SQLException;
-
-    void updateAlbumTracksById(int id, int tracks) throws SQLException;
 
     void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException;
 

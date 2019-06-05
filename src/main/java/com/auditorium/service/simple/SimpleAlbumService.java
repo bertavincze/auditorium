@@ -8,6 +8,7 @@ import com.auditorium.model.User;
 import com.auditorium.service.AlbumService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleAlbumService implements AlbumService {
@@ -24,8 +25,12 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
-    public List<Album> findAll() throws SQLException {
-        return null;
+    public List<AlbumDto> findAll() throws SQLException {
+        List<AlbumDto> albums = new ArrayList<>();
+        for (Album album: albumDao.findAll()) {
+            albums.add(fetchAlbumDto(album));
+        }
+        return albums;
     }
 
     @Override
@@ -34,23 +39,36 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
-    public List<Album> sortByNewestFirst() throws SQLException {
-        return null;
+    public List<AlbumDto> sortByNewestFirst() throws SQLException {
+        List<AlbumDto> albums = new ArrayList<>();
+        for (Album album: albumDao.sortByNewestFirst()) {
+            albums.add(fetchAlbumDto(album));
+        }
+        return albums;
     }
 
     @Override
-    public List<Album> sortByMostLikesFirst() throws SQLException {
-        return null;
+    public List<AlbumDto> sortByMostLikesFirst() throws SQLException {
+        List<AlbumDto> albums = new ArrayList<>();
+        for (Album album: albumDao.sortByMostLikesFirst()) {
+            albums.add(fetchAlbumDto(album));
+        }
+        return albums;
     }
 
     @Override
     public List<Album> findAllByUserId(int userId) throws SQLException {
-        return null;
+        return albumDao.findAllByUserId(userId);
     }
 
     @Override
     public List<AlbumDto> findAllAlbumDto() throws SQLException {
-        return albumDao.findAllAlbumDto();
+        List<AlbumDto> allAlbums = new ArrayList<>();
+        List<Album> albums = findAllPublic();
+        for (Album album : albums) {
+            allAlbums.add(fetchAlbumDto(album));
+        }
+        return allAlbums;
     }
 
     @Override
@@ -60,7 +78,7 @@ public class SimpleAlbumService implements AlbumService {
 
     @Override
     public Album findByTitle(String title) throws SQLException {
-        return null;
+        return albumDao.findByTitle(title);
     }
 
     @Override
@@ -75,31 +93,32 @@ public class SimpleAlbumService implements AlbumService {
 
     @Override
     public void updateAlbumTitleById(int id, String title) throws SQLException {
-
+        albumDao.updateAlbumTitleById(id, title);
     }
 
     @Override
     public void updateAlbumArtById(int id, String artUrl) throws SQLException {
-
-    }
-
-    @Override
-    public void updateAlbumTracksById(int id, int tracks) throws SQLException {
-
+        albumDao.updateAlbumArtById(id, artUrl);
     }
 
     @Override
     public void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException {
-
+        albumDao.updateAlbumVisibilityById(id, isPublic);
     }
 
     @Override
     public void likeAlbumById(int id) throws SQLException {
-
+        albumDao.likeAlbumById(id);
     }
 
     @Override
     public void deleteAlbumById(int id) throws SQLException {
+        albumDao.deleteAlbumById(id);
+    }
 
+    private AlbumDto fetchAlbumDto(Album album) throws SQLException {
+        String artist = findArtistByAlbumUserId(album.getUserId()).getName();
+        List<Track> tracks = findTracksByAlbumId(album.getId());
+        return new AlbumDto(artist, album, tracks);
     }
 }

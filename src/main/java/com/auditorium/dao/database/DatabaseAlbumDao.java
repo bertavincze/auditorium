@@ -1,7 +1,6 @@
 package com.auditorium.dao.database;
 
 import com.auditorium.dao.AlbumDao;
-import com.auditorium.dto.AlbumDto;
 import com.auditorium.model.Album;
 import com.auditorium.model.Track;
 import com.auditorium.model.User;
@@ -40,7 +39,14 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public List<Album> findAll() throws SQLException {
-        return null;
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums";
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                albums.add(fetchAlbum(resultSet));
+            }
+            return albums;
+        }
     }
 
     @Override
@@ -57,29 +63,41 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public List<Album> sortByNewestFirst() throws SQLException {
-        return null;
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE is_public = true ORDER BY date_published DESC";
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                albums.add(fetchAlbum(resultSet));
+            }
+            return albums;
+        }
     }
 
     @Override
     public List<Album> sortByMostLikesFirst() throws SQLException {
-        return null;
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE is_public = true ORDER BY likes DESC";
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                albums.add(fetchAlbum(resultSet));
+            }
+            return albums;
+        }
     }
 
     @Override
     public List<Album> findAllByUserId(int userId) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public List<AlbumDto> findAllAlbumDto() throws SQLException {
-        List<AlbumDto> allAlbumDtos = new ArrayList<>();
-        List<Album> albums = findAllPublic();
-        for (Album album : albums) {
-            String artist = findArtistByAlbumUserId(album.getUserId()).getName();
-            List<Track> tracks = findTracksByAlbumId(album.getId());
-            allAlbumDtos.add(new AlbumDto(artist, album, tracks));
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    albums.add(fetchAlbum(resultSet));
+                }
+            }
         }
-        return allAlbumDtos;
+        return albums;
     }
 
     @Override
@@ -98,6 +116,15 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public Album findByTitle(String title) throws SQLException {
+        String sql = "SELECT * FROM albums WHERE title = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, title);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchAlbum(resultSet);
+                }
+            }
+        }
         return null;
     }
 
@@ -133,7 +160,7 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
                         resultSet.getString("title"),
                         resultSet.getTime("duration").toLocalTime(),
                         resultSet.getInt("album_id")
-                        ));
+                    ));
                 }
                 return tracks;
             }
@@ -142,32 +169,90 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
 
     @Override
     public void updateAlbumTitleById(int id, String title) throws SQLException {
-
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE albums SET title = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, title);
+            statement.setInt(2, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     @Override
     public void updateAlbumArtById(int id, String artUrl) throws SQLException {
-
-    }
-
-    @Override
-    public void updateAlbumTracksById(int id, int tracks) throws SQLException {
-
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE albums SET cover_art = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, artUrl);
+            statement.setInt(2, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     @Override
     public void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException {
-
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE albums SET is_public = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isPublic);
+            statement.setInt(2, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     @Override
     public void likeAlbumById(int id) throws SQLException {
-
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE albums SET likes = likes + 1 WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     @Override
     public void deleteAlbumById(int id) throws SQLException {
-
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "DELETE FROM albums WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
     }
 
     private Album fetchAlbum(ResultSet resultSet) throws SQLException {
@@ -185,4 +270,5 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
             return new Album(id, userId, title, art, tracks, isPublic, datePublished, likes);
         }
     }
+
 }

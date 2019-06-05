@@ -12,13 +12,13 @@ public interface AlbumService {
 
     void addAlbum(int userId, String title, String cover_art, int tracks, boolean isPublic) throws SQLException;
 
-    List<Album> findAll() throws SQLException;
+    List<AlbumDto> findAll() throws SQLException;
 
     List<Album> findAllPublic() throws SQLException;
 
-    List<Album> sortByNewestFirst() throws SQLException;
+    List<AlbumDto> sortByNewestFirst() throws SQLException;
 
-    List<Album> sortByMostLikesFirst() throws SQLException;
+    List<AlbumDto> sortByMostLikesFirst() throws SQLException;
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
@@ -35,8 +35,6 @@ public interface AlbumService {
     void updateAlbumTitleById(int id, String title) throws SQLException;
 
     void updateAlbumArtById(int id, String artUrl) throws SQLException;
-
-    void updateAlbumTracksById(int id, int tracks) throws SQLException;
 
     void updateAlbumVisibilityById(int id, boolean isPublic) throws SQLException;
 
