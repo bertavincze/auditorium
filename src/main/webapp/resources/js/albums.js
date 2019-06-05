@@ -323,7 +323,23 @@ function onForwardResponse() {
 }
 
 function onLikeClicked() {
-    // TODO
+    const xhr = new XMLHttpRequest();
+    const params = new URLSearchParams();
+    params.append('albumId', this.getAttribute('album-id'));
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', onAlbumLikedResponse);
+    xhr.open('POST', 'protected/like');
+    xhr.send(params);
+}
+
+function onAlbumLikedResponse() {
+    if (this.status === OK) {
+        const albumId = JSON.parse(this.responseText);
+        const likeAEl = document.getElementById('fa fa-heart-' + albumId).firstChild;
+        likeAEl.classList.add('visited');
+    } else {
+        onOtherResponse(this);
+    }
 }
 
 function onFavListClicked() {
