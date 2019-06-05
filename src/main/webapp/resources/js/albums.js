@@ -88,13 +88,17 @@ function createAlbumThumbnailButtons(albumDto) {
                       onLikeClicked, onFavListClicked, onFacebookClicked, onTwitterClicked];
 
     const ulEl = document.createElement('ul');
-
     for (let i = 0; i < icons.length; i++) {
         const liEl = document.createElement('li');
         const aEl = document.createElement('a');
         aEl.addEventListener('click', functions[i]);
         liEl.setAttribute('id', icons[i] + '-' + albumDto.album.id);
         aEl.setAttribute('album-id', albumDto.album.id);
+        if (icons[i] === 'fa fa-heart') {
+            if (albumDto.liked === true ) {
+                aEl.classList.add('visited');
+            }
+        }
         const iconEl = document.createElement('i');
         iconEl.className = icons[i];
         if (icons[i] === 'fa fa-pause') {

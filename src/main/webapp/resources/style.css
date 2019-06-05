@@ -415,6 +415,12 @@ input:checked + label div {
     transition: color, padding 0.5s;
 }
 
+.thumbnail-footer-buttons .visited {
+    cursor: pointer;
+    color: #39B2B2;
+    text-decoration: none;
+}
+
 .thumbnail-footer-buttons a:hover {
     color: #39B2B2;
     padding: 0 8px;
