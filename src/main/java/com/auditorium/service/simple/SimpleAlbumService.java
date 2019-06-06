@@ -62,6 +62,15 @@ public class SimpleAlbumService implements AlbumService {
     }
 
     @Override
+    public List<AlbumDto> findAllByPlaylistId(int playlistId) throws SQLException {
+        List<AlbumDto> albums = new ArrayList<>();
+        for (Album album : albumDao.findAllByPlaylistId(playlistId)) {
+            albums.add(fetchAlbumDto(album));
+        }
+        return albums;
+    }
+
+    @Override
     public List<AlbumDto> findAllAlbumDto() throws SQLException {
         List<AlbumDto> allAlbums = new ArrayList<>();
         List<Album> albums = findAllPublic();

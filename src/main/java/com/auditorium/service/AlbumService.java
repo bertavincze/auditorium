@@ -22,6 +22,8 @@ public interface AlbumService {
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
+    List<AlbumDto> findAllByPlaylistId(int playlistId) throws SQLException;
+
     List<AlbumDto> findAllAlbumDto() throws SQLException;
 
     Album findById(int id) throws SQLException;

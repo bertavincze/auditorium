@@ -21,6 +21,8 @@ public interface AlbumDao {
 
     List<Album> findAllByUserId(int userId) throws SQLException;
 
+    List<Album> findAllByPlaylistId(int playlistId) throws SQLException;
+
     Album findById(int id) throws SQLException;
 
     Album findByTitle(String title) throws SQLException;

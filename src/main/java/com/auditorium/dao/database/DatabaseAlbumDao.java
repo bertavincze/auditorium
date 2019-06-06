@@ -101,6 +101,22 @@ public class DatabaseAlbumDao extends AbstractDao implements AlbumDao {
     }
 
     @Override
+    public List<Album> findAllByPlaylistId(int playlistId) throws SQLException {
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT id, user_id, title, cover_art, tracks, is_public, date_published, likes FROM albums " +
+            "JOIN playlist_albums ON playlist_albums.album_id = albums.id WHERE playlist_albums.playlist_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, playlistId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    albums.add(fetchAlbum(resultSet));
+                }
+            }
+        }
+        return albums;
+    }
+
+    @Override
     public Album findById(int id) throws SQLException {
         String sql = "SELECT * FROM albums WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
