@@ -1,4 +1,5 @@
-DROP TABLE IF EXISTS favourites;
+DROP TABLE IF EXISTS playlist_albums;
+DROP TABLE IF EXISTS playlists;
 DROP TABLE IF EXISTS tracks;
 DROP TABLE IF EXISTS album_likes;
 DROP TABLE IF EXISTS albums;
@@ -40,11 +41,18 @@ CREATE TABLE tracks (
     CONSTRAINT title_not_empty CHECK (title <> '')
 );
 
-CREATE TABLE favourites (
+CREATE TABLE playlists (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
     user_id INTEGER NOT NULL,
-    album_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, album_id),
     FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT title_not_empty CHECK (title <> '')
+);
+
+CREATE TABLE playlist_albums (
+    playlist_id INTEGER NOT NULL,
+    album_id INTEGER NOT NULL,
+    FOREIGN KEY (playlist_id) REFERENCES playlists(id),
     FOREIGN KEY (album_id) REFERENCES albums(id)
 );
 
@@ -90,6 +98,28 @@ RETURNS TRIGGER AS
     END;
 'LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION check_playlist_title_uniqueness()
+RETURNS TRIGGER AS
+    'BEGIN
+        IF (SELECT EXISTS(SELECT 1 FROM playlists WHERE user_id = NEW.user_id AND title = NEW.title) = true) THEN
+            RAISE EXCEPTION ''A playlist by this title already exists!'';
+        ELSE
+            RETURN NEW;
+        END IF;
+    END;
+'LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION check_playlist_album_uniqueness()
+RETURNS TRIGGER AS
+    'BEGIN
+        IF (SELECT EXISTS(SELECT 1 FROM playlist_albums WHERE album_id = NEW.album_id AND playlist_id = NEW.playlist_id) = true) THEN
+            RAISE EXCEPTION ''This album is already on this playlist!'';
+        ELSE
+            RETURN NEW;
+        END IF;
+    END;
+'LANGUAGE plpgsql;
+
 CREATE TRIGGER set_date_published
     BEFORE INSERT OR UPDATE ON albums
     FOR EACH ROW
@@ -99,6 +129,16 @@ CREATE TRIGGER check_like_uniqueness
     BEFORE INSERT ON album_likes
     FOR EACH ROW
     EXECUTE PROCEDURE check_like_uniqueness();
+
+CREATE TRIGGER check_playlist_title_uniqueness
+    BEFORE INSERT ON playlists
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_playlist_title_uniqueness();
+
+CREATE TRIGGER check_playlist_album_uniqueness
+    BEFORE INSERT ON playlist_albums
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_playlist_album_uniqueness();
 
 INSERT INTO users (email, name, password, role) VALUES
     ('jaimenye@gmail.com', 'Jaime Nye', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'artist'),
@@ -197,9 +237,6 @@ INSERT INTO tracks (title, duration, album_id) VALUES
     ('All in Good Time', '00:00:05', 21),
     ('Tony', '00:00:05', 22),
     ('Train Disaster', '00:00:05', 22);
-
-INSERT INTO favourites (user_id, album_id) VALUES
-    (2, 1);
 
 INSERT INTO album_likes (user_id, album_id) VALUES
     (1, 1),
@@ -422,3 +459,11 @@ INSERT INTO album_likes (user_id, album_id) VALUES
     (18, 22),
     (19, 22),
     (22, 22);
+
+INSERT INTO playlists(title, user_id) VALUES
+    ('My Playlist', 1);
+
+INSERT INTO playlist_albums(playlist_id, album_id) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3);
