@@ -36,6 +36,16 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
+    public void addNewUserPlaylist(String title, int userId) throws SQLException {
+        userDao.addNewUserPlaylist(title, userId);
+    }
+
+    @Override
+    public void addAlbumToUserPlaylist(int playlistId, int albumId) throws SQLException {
+        userDao.addAlbumToUserPlaylist(playlistId, albumId);
+    }
+
+    @Override
     public List<User> findAll() throws SQLException {
         return userDao.findAll();
     }

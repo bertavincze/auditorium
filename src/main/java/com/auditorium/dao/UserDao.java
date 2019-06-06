@@ -9,6 +9,10 @@ public interface UserDao {
 
     void addUser(String name, String email, String password, String role) throws SQLException;
 
+    void addNewUserPlaylist(String title, int userId) throws SQLException;
+
+    void addAlbumToUserPlaylist(int playlistId, int albumId) throws SQLException;
+
     List<User> findAll() throws SQLException;
 
     User findById(int id) throws SQLException;
