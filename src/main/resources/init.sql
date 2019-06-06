@@ -53,7 +53,7 @@ CREATE TABLE playlist_albums (
     playlist_id INTEGER NOT NULL,
     album_id INTEGER NOT NULL,
     FOREIGN KEY (playlist_id) REFERENCES playlists(id),
-    FOREIGN KEY (album_id) REFERENCES albums(id)
+    FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
 );
 
 CREATE TABLE album_likes (
@@ -61,7 +61,7 @@ CREATE TABLE album_likes (
     user_id INTEGER NOT NULL,
     album_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (album_id) REFERENCES albums(id)
+    FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE FUNCTION set_date_published()
