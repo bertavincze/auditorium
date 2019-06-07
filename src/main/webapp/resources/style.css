@@ -356,7 +356,7 @@ input:checked + label div {
 
 .thumbnail-overlay {
     position: absolute;
-    z-index: 99;
+    z-index: 98;
     width: 100%;
     height: 300px;
     background-color: transparent;
@@ -424,6 +424,57 @@ input:checked + label div {
 .thumbnail-footer-buttons a:hover {
     color: #39B2B2;
     padding: 0 8px;
+}
+
+.modal {
+    display: block;
+    z-index: 99;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    background-color: rgba(15, 18, 29, 0.80);
+    color: #ffffff;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    animation: fadeIn 0.5s;
+}
+
+.modal p {
+    margin: 10px 0;
+}
+
+.modal ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modal a {
+    color: #ffffff;
+    text-decoration: none;
+    -webkit-transition: color 0.5s;
+    -moz-transition: color 0.5s;
+    -o-transition: color 0.5s;
+    transition: color 0.5s;
+}
+
+.modal a:hover {
+    color: #39B2B2;
+}
+
+.modal .close-modal {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 15px;
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+    animation: fadeIn 0.5s;
 }
 
 /* CONTENT ONE DIV */
@@ -519,6 +570,7 @@ input:checked + label div {
     bottom: 0;
     z-index: 99;
     background: rgba(15, 18, 29, 0.7);
+    animation: fadeIn 0.5s;
 }
 
 #now-playing-bar p {
@@ -531,10 +583,6 @@ input:checked + label div {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    -webkit-transition: ease-in 0.5s;
-    -moz-transition: ease-in 0.5s;
-    -o-transition: ease-in 0.5s;
-    transition: ease-in 0.5s;
 }
 
 /* FOOTER */

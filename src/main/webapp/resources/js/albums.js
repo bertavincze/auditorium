@@ -85,7 +85,7 @@ function createAlbumThumbnailButtons(albumDto) {
                         'fa fa-heart', 'fa fa-list-ul', 'fa fa-facebook', 'fa fa-twitter'];
 
     const functions = [onExternalLinkClicked, onPlayClicked, onPauseClicked, onForwardClicked, 
-                      onLikeClicked, onFavListClicked, onFacebookClicked, onTwitterClicked];
+                      onLikeClicked, onAddToPlayListClicked, onFacebookClicked, onTwitterClicked];
 
     const ulEl = document.createElement('ul');
     for (let i = 0; i < icons.length; i++) {
@@ -342,8 +342,82 @@ function onAlbumLikedResponse() {
     }
 }
 
-function onFavListClicked() {
-    // TODO
+function onAddToPlayListClicked() {
+    const albumId = this.getAttribute('album-id');
+    const coordinates = [event.pageX, event.pageY];
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', function() {
+        if (this.status === OK) {
+            const playlists = JSON.parse(this.responseText);
+            createPlaylistsDisplay(playlists, coordinates, albumId);
+        } else {
+            onOtherResponse(this);
+        }
+    });
+    xhr.open('GET', 'protected/playlists');
+    xhr.send();
+}
+
+function createPlaylistsDisplay(playlists, coordinates, albumId) {
+    const playlistsDivEl = document.createElement('div');
+    playlistsDivEl.setAttribute('id', 'playlists-view');
+    playlistsDivEl.className = 'modal';
+    playlistsDivEl.style.left = coordinates[0] + 'px';
+    playlistsDivEl.style.top = coordinates[1] + 'px';
+
+    const closeButton = document.createElement('a');
+    closeButton.className = 'close-modal';
+    closeButton.addEventListener('click', onModalCloseClicked);
+    closeButton.innerHTML = '<i class="fa fa-times"></i>';
+    playlistsDivEl.appendChild(closeButton);
+
+    const pEl = document.createElement('p');
+    pEl.innerHTML = 'Add to playlist: <br>';
+    playlistsDivEl.appendChild(pEl);
+    
+    const ulEl = document.createElement('ul');
+    
+    for (let i = 0; i < playlists.length; i++) {
+        const playlist = playlists[i];
+        const liEl = document.createElement('li');
+        const aEl = document.createElement('a');
+        aEl.textContent = playlist.playlist.title;
+        aEl.setAttribute('playlist-id', playlist.playlist.id);
+        aEl.setAttribute('album-id', albumId);
+        aEl.addEventListener('click', onPlaylistTitleClicked);
+        liEl.appendChild(aEl);
+        ulEl.appendChild(liEl);
+    }
+
+    playlistsDivEl.appendChild(ulEl);
+    document.body.appendChild(playlistsDivEl);
+    playlistsDivEl.classList.toggle('active');
+}
+
+function onModalCloseClicked() {
+    const playlistsDivEl = document.getElementById('playlists-view');
+    playlistsDivEl.classList.remove('active');
+    playlistsDivEl.remove();
+}
+
+function onPlaylistTitleClicked() {
+    const xhr = new XMLHttpRequest();
+    const params = new URLSearchParams();
+    params.append('albumId', this.getAttribute('album-id'));
+    params.append('playlistId', this.getAttribute('playlist-id'));
+    xhr.addEventListener('error', onNetworkError);
+    xhr.addEventListener('load', function() {
+        if (this.status === OK) {
+            alert('Album added to playlist.');
+            onModalCloseClicked();
+        } else {
+            onOtherResponse(this);
+        }
+    });
+    xhr.open('POST', 'protected/playlist');
+    xhr.send(params);
 }
 
 function onFacebookClicked() {
