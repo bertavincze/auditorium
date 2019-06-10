@@ -19,8 +19,8 @@
     <script type="text/javascript" src="resources/js/login.js"></script>
     <script type="text/javascript" src="resources/js/logout.js"></script>
     <script type="text/javascript" src="resources/js/albums.js"></script>
-
-    </head>
+    <script type="text/javascript" src="resources/js/profile.js"></script>
+</head>
 
 <body>
 
@@ -43,7 +43,7 @@
                     <a id="head-sign-up">Create account<span class="nav-line"></span></a>
                 </li>
                 <li>
-                    <a id="head-profile">My Profile<span class="nav-line"></span></a>
+                    <a id="head-profile" onclick="onProfileClicked()">My Profile<span class="nav-line"></span></a>
                 </li>
                 <li>
                     <a id="head-sign-out" onclick="onLogoutClicked()">Sign out<span class="nav-line"></span></a>
@@ -101,7 +101,7 @@
                 <ul id="user-menu">
                     <h2>Welcome!</h2>
                     <li>
-                        <a>My Profile<span class="nav-line-white"></span></a>
+                        <a onclick="onProfileClicked()">My Profile<span class="nav-line-white"></span></a>
                     </li>
                     <li>
                         <a onclick="onLogoutClicked()">Sign out<span class="nav-line-white"></span></a>
