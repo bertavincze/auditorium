@@ -49,7 +49,7 @@ function checkAuth() {
 
 function onAuthResponse() {
     if (this.status === OK) {
-        setAuthorization(this.responseText);
+        setAuthorization(JSON.parse(this.responseText));
         return true;
     } else {
         setUnauthorized();
