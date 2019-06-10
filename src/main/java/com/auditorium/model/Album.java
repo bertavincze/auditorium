@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public final class Album extends AbstractModel {
 
-    private final int userId;
-    private final String title;
-    private final String art;
-    private final int tracks;
-    private final boolean isPublic;
-    private final LocalDate datePublished;
-    private final int likes;
+    private int userId;
+    private String title;
+    private String art;
+    private int tracks;
+    private boolean isPublic;
+    private LocalDate datePublished;
+    private int likes;
 
     public Album(int id, int userId, String title, String art, int tracks, boolean isPublic, LocalDate datePublished, int likes) {
         super(id);
@@ -33,6 +33,8 @@ public final class Album extends AbstractModel {
         this.datePublished = null;
         this.likes = likes;
     }
+
+    public Album() {}
 
     public int getUserId() {
         return userId;

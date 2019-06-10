@@ -4,9 +4,9 @@ import java.time.LocalTime;
 
 public final class Track extends AbstractModel {
 
-    private final String title;
-    private final LocalTime duration;
-    private final int albumId;
+    private String title;
+    private LocalTime duration;
+    private int albumId;
 
     public Track(int id, String title, LocalTime duration, int albumId) {
         super(id);
@@ -14,6 +14,8 @@ public final class Track extends AbstractModel {
         this.duration = duration;
         this.albumId = albumId;
     }
+
+    public Track() {}
 
     public String getTitle() {
         return title;
