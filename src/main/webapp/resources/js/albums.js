@@ -352,7 +352,7 @@ function onAddToPlayListClicked() {
     xhr.addEventListener('load', function() {
         if (this.status === OK) {
             const playlists = JSON.parse(this.responseText);
-            createPlaylistsDisplay(playlists, coordinates, albumId);
+            createPlaylistsPopup(playlists, coordinates, albumId);
         } else {
             onOtherResponse(this);
         }
@@ -361,7 +361,7 @@ function onAddToPlayListClicked() {
     xhr.send();
 }
 
-function createPlaylistsDisplay(playlists, coordinates, albumId) {
+function createPlaylistsPopup(playlists, coordinates, albumId) {
     const playlistsDivEl = document.createElement('div');
     playlistsDivEl.setAttribute('id', 'playlists-view');
     playlistsDivEl.className = 'modal';
