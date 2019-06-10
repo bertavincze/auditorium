@@ -576,7 +576,7 @@ input:checked + label div {
 }
 
 #profile-view table {
-    width: 70%;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -647,6 +647,82 @@ details[open] > summary ~ * {
     animation: open 1s ease;
 }
 
+details p {
+    text-align: center;
+    margin: 10px;
+}
+
+.album-thumbnails-small {
+    padding: 0;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.thumbnail-small-li {
+    display: inline-block;
+    margin: 8px;
+}
+
+.thumbnail-small {
+    width: 250px;
+    height: 200px;
+    background: url();
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.thumbnail-small-overlay p {
+    padding-top: 150px; 
+    margin: 0 10px 10px 10px;
+    font-family: 'Oswald', sans-serif;
+    text-align: left;
+    font-size: 20px;
+    color: #ffffff;
+    text-shadow: -3px 3px 5px #000;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.thumbnail-small-overlay {
+    position: absolute;
+    z-index: 98;
+    width: 100%;
+    height: 200px;
+    background-color: transparent;
+    text-transform: capitalize;
+}
+
+.thumbnail-small-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.thumbnail-small-overlay:hover .thumbnail-small-buttons {
+    display: block;
+}
+
+.thumbnail-small-buttons {
+    display: none;
+    width: 100%;
+    z-index: 99;
+    position: absolute;
+    padding: 82px 0;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 26px;
+    animation: fadeIn 1s;
+}
+
+.thumbnail-small-buttons a, .thumbnail-small-buttons a:hover {
+    color: #ffffff;
+    text-shadow: -3px 3px 5px rgb(0, 0, 0);
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+}
+
 /* NOW PLAYING BAR */
 
 #now-playing-bar {
@@ -684,7 +760,7 @@ footer {
 #back-to-top-btn {
     color: #ffffff;
     font-size: 24px;
-    margin: 0 auto;
+    margin: 10px auto;
     display: none;
     padding: 0;
     width: 10%;
