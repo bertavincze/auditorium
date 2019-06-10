@@ -8,12 +8,23 @@
         opacity: 1;
     }
 }
-    @keyframes fadeIn {
+
+@keyframes fadeIn {
     from {
         opacity: 0;
     }
     to {
         opacity: 1;
+    }
+}
+
+@keyframes open {
+    0% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
     }
 }
 
@@ -483,8 +494,12 @@ input:checked + label div {
     display: block;
     position: relative;
     right: 0;
-    width: 85%;
+    width: 75%;
     margin: 0 auto;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: left;
 }
 
 #album-details-view {
@@ -558,6 +573,78 @@ input:checked + label div {
     font-weight: normal;
     padding-bottom: 20px;
     text-transform: capitalize;
+}
+
+#profile-view table {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#profile-view td {
+    padding: 20px 10px;
+    text-align: justify;
+    vertical-align: middle;
+}
+
+#profile-view table a, a:hover {
+    color: #ffffff;
+}
+
+.profile-input {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    background: rgba(15, 18, 29, 0.80);
+    color: #ffffff;
+    outline: none;
+}
+
+details {
+    position: relative;
+}
+  
+details summary::-webkit-details-marker {
+    display: none;
+}
+  
+details summary::before {
+    font-family: FontAwesome;
+    content: "\f101";
+    position: absolute;
+    left: 0;
+    transition: transform 0.1s linear;
+}
+  
+summary {
+    width: 100%;
+    padding: 20px;
+    padding-left: 25px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #39B2B2;
+}
+  
+summary:hover {
+    color: #39B2B2;
+    cursor: pointer;
+}
+  
+summary:focus {
+    outline: none;
+}
+  
+details[open] summary:before {
+    transform: rotate(90deg);
+}
+  
+details[open] > summary {
+    color: #39B2B2;
+}
+  
+details[open] > summary ~ * {
+    animation: open 1s ease;
 }
 
 /* NOW PLAYING BAR */

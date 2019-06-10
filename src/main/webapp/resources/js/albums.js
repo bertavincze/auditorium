@@ -135,6 +135,7 @@ function onAlbumResponse() {
 
 function onAlbumReceived(albumDto) {
     removeAllChildren(content);
+    removeAllChildren(contentView);
     [sortMenu, content].forEach(function(element) {
         hideElementById(element);
     });
