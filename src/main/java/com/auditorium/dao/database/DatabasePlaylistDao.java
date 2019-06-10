@@ -85,7 +85,7 @@ public class DatabasePlaylistDao extends AbstractDao implements PlaylistDao {
     public void updateTitleById(String title, int playlistId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "UPDATE playlists SET title = ? WHERE playlist_id = ?";
+        String sql = "UPDATE playlists SET title = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, title);
             statement.setInt(2, playlistId);
