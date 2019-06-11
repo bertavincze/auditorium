@@ -37,7 +37,7 @@ CREATE TABLE tracks (
     title TEXT NOT NULL,
     duration TIME NOT NULL,
     album_id INTEGER NOT NULL,
-    FOREIGN KEY (album_id) REFERENCES albums(id),
+    FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE,
     CONSTRAINT title_not_empty CHECK (title <> '')
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE playlists (
 CREATE TABLE playlist_albums (
     playlist_id INTEGER NOT NULL,
     album_id INTEGER NOT NULL,
-    FOREIGN KEY (playlist_id) REFERENCES playlists(id),
+    FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE,
     FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
 );
 
