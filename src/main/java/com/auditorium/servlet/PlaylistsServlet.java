@@ -27,17 +27,12 @@ public class PlaylistsServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
-            AlbumDao albumDao = new DatabaseAlbumDao(connection);
             PlaylistDao playlistDao = new DatabasePlaylistDao(connection);
-            AlbumService albumService = new SimpleAlbumService(albumDao);
             PlaylistService playlistService = new SimplePlaylistService(playlistDao);
 
-            int userId = ((User) req.getSession().getAttribute("user")).getId();
+            int userId = Integer.parseInt(req.getParameter("userId"));
 
-            List<PlaylistDto> playlists = new ArrayList<>();
-            for (Playlist playlist : playlistService.findAllByUser(userId)) {
-                playlists.add(new PlaylistDto(playlist, albumService.findAllByPlaylistId(playlist.getId())));
-            }
+            List<Playlist> playlists = playlistService.findAllByUser(userId);
 
             sendMessage(resp, HttpServletResponse.SC_OK, playlists);
         } catch (SQLException ex) {
@@ -51,7 +46,7 @@ public class PlaylistsServlet extends AbstractServlet {
             PlaylistDao playlistDao = new DatabasePlaylistDao(connection);
             PlaylistService playlistService = new SimplePlaylistService(playlistDao);
 
-            int userId = ((User) req.getSession().getAttribute("user")).getId();
+            int userId = Integer.parseInt(req.getParameter("userId"));
             String title = req.getParameter("title");
 
             playlistService.addNewUserPlaylist(title, userId);
