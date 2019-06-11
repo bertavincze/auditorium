@@ -82,10 +82,10 @@ function createAlbumThumbnailButtons(albumDto) {
     footerButtonsEl.className = 'thumbnail-footer-buttons';
 
     const icons = ['fa fa-external-link', 'fa fa-play', 'fa fa-pause', 'fa fa-forward',
-                        'fa fa-heart', 'fa fa-list-ul', 'fa fa-facebook', 'fa fa-twitter'];
+                        'fa fa-heart', 'fa fa-list-ul'];
 
     const functions = [onExternalLinkClicked, onPlayClicked, onPauseClicked, onForwardClicked, 
-                      onLikeClicked, onAddToPlayListClicked, onFacebookClicked, onTwitterClicked];
+                      onLikeClicked, onAddToPlayListClicked];
 
     const ulEl = document.createElement('ul');
     for (let i = 0; i < icons.length; i++) {
@@ -196,7 +196,11 @@ function createAlbumInfoTdEl(albumDto) {
     dateTitleEl.textContent = 'Release date';
     const datePEl = document.createElement('p');
     datePEl.className = 'album-info';
-    datePEl.textContent = albumDto.album.datePublished.dayOfMonth + ' ' + albumDto.album.datePublished.month + ', ' + albumDto.album.datePublished.year;
+    if (albumDto.album.public === true) {
+        datePEl.textContent = albumDto.album.datePublished.dayOfMonth + ' ' + albumDto.album.datePublished.month + ', ' + albumDto.album.datePublished.year;
+    } else {
+        datePEl.textContent = 'Not released yet.'
+    }
     albumInfoTdEl.appendChild(dateTitleEl);
     albumInfoTdEl.appendChild(datePEl);
 
@@ -384,8 +388,8 @@ function createPlaylistsPopup(playlists, coordinates, albumId) {
         const playlist = playlists[i];
         const liEl = document.createElement('li');
         const aEl = document.createElement('a');
-        aEl.textContent = playlist.playlist.title;
-        aEl.setAttribute('playlist-id', playlist.playlist.id);
+        aEl.textContent = playlist.title;
+        aEl.setAttribute('playlist-id', playlist.id);
         aEl.setAttribute('album-id', albumId);
         aEl.addEventListener('click', onPlaylistTitleClicked);
         liEl.appendChild(aEl);
@@ -419,12 +423,4 @@ function onPlaylistTitleClicked() {
     });
     xhr.open('POST', 'protected/playlist');
     xhr.send(params);
-}
-
-function onFacebookClicked() {
-    // TODO
-}
-
-function onTwitterClicked() {
-    // TODO
 }
