@@ -39,6 +39,22 @@ public class PlaylistServlet extends AbstractServlet {
     }
 
     @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            PlaylistDao playlistDao = new DatabasePlaylistDao(connection);
+            PlaylistService playlistService = new SimplePlaylistService(playlistDao);
+
+            int playlistId = Integer.parseInt(req.getParameter("playlistId"));
+            String title = req.getParameter("title");
+
+            playlistService.updateTitleById(title, playlistId);
+            sendMessage(resp, HttpServletResponse.SC_OK, "Title updated.");
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             PlaylistDao playlistDao = new DatabasePlaylistDao(connection);
