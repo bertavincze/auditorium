@@ -196,7 +196,7 @@ function createAlbumInfoTdEl(albumDto) {
     dateTitleEl.textContent = 'Release date';
     const datePEl = document.createElement('p');
     datePEl.className = 'album-info';
-    if (albumDto.album.public === true) {
+    if (albumDto.album.datePublished != null) {
         datePEl.textContent = albumDto.album.datePublished.dayOfMonth + ' ' + albumDto.album.datePublished.month + ', ' + albumDto.album.datePublished.year;
     } else {
         datePEl.textContent = 'Not released yet.'
@@ -352,6 +352,8 @@ function onAddToPlayListClicked() {
     const coordinates = [event.pageX, event.pageY];
 
     const xhr = new XMLHttpRequest();
+    const params = new URLSearchParams();
+    params.append('userId', getCurrentUser().id);
     xhr.addEventListener('error', onNetworkError);
     xhr.addEventListener('load', function() {
         if (this.status === OK) {
@@ -361,7 +363,7 @@ function onAddToPlayListClicked() {
             onOtherResponse(this);
         }
     });
-    xhr.open('GET', 'protected/playlists');
+    xhr.open('GET', 'protected/playlists?' + params.toString());
     xhr.send();
 }
 
@@ -410,6 +412,7 @@ function onModalCloseClicked() {
 function onPlaylistTitleClicked() {
     const xhr = new XMLHttpRequest();
     const params = new URLSearchParams();
+    params.append('userId', getCurrentUser().id);
     params.append('albumId', this.getAttribute('album-id'));
     params.append('playlistId', this.getAttribute('playlist-id'));
     xhr.addEventListener('error', onNetworkError);
