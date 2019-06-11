@@ -499,7 +499,122 @@ function onAddTrackSubmitResponse() {
 }
 
 function onEditAlbumClicked() {
-    // TODO
+    const params = new URLSearchParams();
+    params.append('albumId', this.getAttribute('album-id'));
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onEditAlbumResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'album?' + params.toString());
+    xhr.send();
+}
+
+function onEditAlbumResponse() {
+    if (this.status === OK) {
+        const albumDto = JSON.parse(this.responseText);
+        createAlbumEditDiv(albumDto);
+    } else {
+        onOtherResponse(this);
+    }
+}
+
+function createAlbumEditDiv(albumDto) {
+    removeAllChildren(contentView);
+    const albumEditDiv = document.createElement('div');
+    albumEditDiv.id = 'album-edit-div';
+
+    const formEl = document.createElement('form');
+    formEl.id = 'album-create-form';
+    formEl.setAttribute('onsubmit', 'return false;');
+
+    const title = document.createElement('h2');
+    title.textContent = 'Edit album';
+    formEl.appendChild(title);
+
+    const albumAttr = ['Title', 'Cover art (URL)'];
+    const albumDtoAttr = [albumDto.album.title, albumDto.album.art];
+
+    const ul = document.createElement('ul');
+
+    for (let i = 0; i < albumAttr.length; i++) {
+        const li = document.createElement('li');
+        const attr = albumAttr[i];
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'album-create-input';
+        input.name = attr.toLowerCase();
+        input.placeholder = attr;
+        input.required = true;
+        input.value = albumDtoAttr[i];
+        li.appendChild(input);
+        ul.appendChild(li);
+    }
+
+    const li = document.createElement('li');
+    const select = document.createElement('select');
+    select.className = 'album-create-select';
+    select.name = 'visibility';
+    select.required = true;
+    const private = document.createElement('option');
+    private.textContent = 'Private';
+    private.value = false;
+    const public = document.createElement('option');
+    public.textContent = 'Public';
+    public.value = true;
+    if (albumDto.album.public === true) {
+        public.toggleAttribute('selected');
+    } else {
+        private.toggleAttribute('selected');
+    }
+    select.appendChild(private);
+    select.appendChild(public);
+    li.appendChild(select);
+    ul.appendChild(li);
+
+    const liLast = document.createElement('li');
+    const submitEl = document.createElement('input');
+    submitEl.type = 'submit';
+    submitEl.className = 'album-create-submit';
+    submitEl.value = 'Save';
+    submitEl.setAttribute('album-id', albumDto.album.id);
+    submitEl.addEventListener('click', onEditAlbumSubmitClicked)
+    liLast.appendChild(submitEl);
+    ul.appendChild(liLast);
+
+    formEl.appendChild(ul);
+    albumEditDiv.appendChild(formEl);
+    contentView.appendChild(albumEditDiv);
+}
+
+function onEditAlbumSubmitClicked() {
+    const albumFormEl = document.forms['album-create-form'];
+
+    const titleInputEl = albumFormEl.querySelector('input[name="title"]');
+    const artInputEl = albumFormEl.querySelector('input[name="cover art (url)"]');
+    const visibilitySelectEl = albumFormEl.querySelector('select[name="visibility"]');
+
+    const title = titleInputEl.value;
+    const art = artInputEl.value;
+    const visibility = visibilitySelectEl.value;
+
+    const params = new URLSearchParams();
+    params.append('albumId', this.getAttribute('album-id'));
+    params.append('title', title);
+    params.append('art', art);
+    params.append('isPublic', visibility);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', function() {
+        if (this.status === OK) {
+            onProfileClicked();
+            document.getElementById('artist-menu').toggleAttribute('open');
+        } else {
+            onOtherResponse(this);
+        }
+    });
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'album?' + params.toString());
+    xhr.send();
 }
 
 function onDeleteAlbumClicked() {
@@ -550,6 +665,7 @@ function fetchPlaylistsByUser(user) {
 
 function createPlaylistsDisplay(playlists) {
     const tableEl = document.createElement('table');
+    tableEl.id = 'profile-playlists-table';
 
     for (let i = 0; i < playlists.length; i++) {
         const playlist = playlists[i];
@@ -588,7 +704,55 @@ function createPlaylistsDisplay(playlists) {
 }
 
 function onAddNewPlaylistClicked() {
+    const tableEl = document.getElementById('profile-playlists-table');
+    const newRow = tableEl.insertRow(-1);
+    const titleHTdEl = newRow.insertCell(0);
+    titleHTdEl.textContent = 'Title: '
+    const titleTdEl = newRow.insertCell(1);
+    titleTdEl.id = 'new-playlist-title';
+    const inputEl = document.createElement('input');
+    inputEl.type = 'text';
+    inputEl.placeholder = 'Enter a title for the playlist'
+    inputEl.className = 'profile-input';
+    titleTdEl.appendChild(inputEl);
+    const addTdEl = newRow.insertCell(2);
+    const addAEl = document.createElement('a');
+    addAEl.innerHTML = '<i class="fa fa-plus"></i>'
+    addAEl.addEventListener('click', onAddPlaylistButtonClicked);
+    addTdEl.appendChild(addAEl);
+    const cancelTdEl = newRow.insertCell(3);
+    const cancelAEl = document.createElement('a');
+    cancelAEl.innerHTML = '<i class="fa fa-times"></i>'
+    cancelAEl.addEventListener('click', onCancelAddPlaylistButtonClicked);
+    cancelTdEl.appendChild(cancelAEl);
+}
 
+function onAddPlaylistButtonClicked() {
+    const xhr = new XMLHttpRequest();
+    const params = new URLSearchParams();
+    
+    if (document.getElementById('new-playlist-title').firstChild.value) {
+        params.append('userId', getCurrentUser().id);
+        params.append('title', document.getElementById('new-playlist-title').firstChild.value);
+
+        xhr.addEventListener('error', onNetworkError);
+        xhr.addEventListener('load', function() {
+            if (this.status === OK) {
+                onProfileClicked();
+                document.getElementById('profile-playlists').toggleAttribute('open');
+            } else {
+                onOtherResponse(this);
+            }
+        });
+        
+        xhr.open('POST', 'protected/playlists?' + params.toString());
+        xhr.send();
+    } 
+}
+
+function onCancelAddPlaylistButtonClicked() {
+    const tableEl = document.getElementById('profile-playlists-table');
+    tableEl.deleteRow(-1);
 }
 
 function onEditPlaylistClicked() {
