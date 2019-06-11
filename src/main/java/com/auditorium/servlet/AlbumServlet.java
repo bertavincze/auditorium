@@ -3,6 +3,7 @@ package com.auditorium.servlet;
 import com.auditorium.dao.AlbumDao;
 import com.auditorium.dao.database.DatabaseAlbumDao;
 import com.auditorium.dto.AlbumDto;
+import com.auditorium.model.Album;
 import com.auditorium.service.AlbumService;
 import com.auditorium.service.simple.SimpleAlbumService;
 
@@ -38,6 +39,23 @@ public final class AlbumServlet extends AbstractServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            AlbumDao albumDao = new DatabaseAlbumDao(connection);
+            AlbumService albumService = new SimpleAlbumService(albumDao);
+
+            int userId = Integer.parseInt(req.getParameter("userId"));
+            String title = req.getParameter("title");
+            String art = req.getParameter("art");
+            int tracks = Integer.parseInt(req.getParameter("tracks"));
+            boolean isPublic = Boolean.parseBoolean(req.getParameter("isPublic"));
+
+            albumService.addAlbum(userId, title, art, tracks, isPublic);
+            Album album = albumService.findByTitle(title);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, album);
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
     }
 
     @Override
@@ -46,5 +64,17 @@ public final class AlbumServlet extends AbstractServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            AlbumDao albumDao = new DatabaseAlbumDao(connection);
+            AlbumService albumService = new SimpleAlbumService(albumDao);
+
+            int albumId = Integer.parseInt(req.getParameter("albumId"));
+
+            albumService.deleteAlbumById(albumId);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Album deleted.");
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
     }
 }
