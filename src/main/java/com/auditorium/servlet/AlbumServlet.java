@@ -60,6 +60,23 @@ public final class AlbumServlet extends AbstractServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            AlbumDao albumDao = new DatabaseAlbumDao(connection);
+            AlbumService albumService = new SimpleAlbumService(albumDao);
+
+            int albumId = Integer.parseInt(req.getParameter("albumId"));
+            String title = req.getParameter("title");
+            String art = req.getParameter("art");
+            boolean isPublic = Boolean.parseBoolean(req.getParameter("isPublic"));
+
+            albumService.updateAlbumTitleById(albumId, title);
+            albumService.updateAlbumArtById(albumId, art);
+            albumService.updateAlbumVisibilityById(albumId, isPublic);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Album details updated.");
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
     }
 
     @Override
