@@ -578,6 +578,7 @@ input:checked + label div {
 details table {
     width: 90%;
     margin: 0 auto;
+    transition: .2s;
 }
 
 details td {
@@ -722,18 +723,18 @@ details p {
     display: inline-block;
 }
 
-#album-create-div {
+#album-create-div, #album-edit-div {
     text-align: center;
+    margin: 0 auto;
 }
 
 #album-create-form {
-    width: 70%;
     padding: 30px 0;
     background: transparent;
     transition: .2s;
 }
 
-#album-create-div h2 {
+#album-create-div, #album-edit-div h2 {
     color: #ffffff;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
