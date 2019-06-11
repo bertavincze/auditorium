@@ -575,25 +575,24 @@ input:checked + label div {
     text-transform: capitalize;
 }
 
-#profile-view table {
+details table {
     width: 90%;
     margin: 0 auto;
 }
 
-#profile-view td {
+details td {
     padding: 20px 10px;
     text-align: justify;
     vertical-align: middle;
 }
 
-#profile-view table a, a:hover {
+details table a, details a:hover {
     color: #ffffff;
 }
 
 .profile-input {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
-    width: 100%;
     border: none;
     background: rgba(15, 18, 29, 0.80);
     color: #ffffff;
@@ -721,6 +720,87 @@ details p {
     cursor: pointer;
     margin: 5px;
     display: inline-block;
+}
+
+#album-create-div {
+    text-align: center;
+}
+
+#album-create-form {
+    width: 70%;
+    padding: 30px 0;
+    background: transparent;
+    transition: .2s;
+}
+
+#album-create-div h2 {
+    color: #ffffff;
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#album-create-form ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.album-create-input {
+    margin: 15px 0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    width: 50%;
+    border: 1px solid #39B2B2;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(15, 18, 29, 0.80);
+    color: white;
+    outline: none;
+}
+
+.album-create-select {
+    margin: 15px 0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    width: 50%;
+    border: 1px solid #39B2B2;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(15, 18, 29, 0.80);
+    color: white;
+    outline: none;
+}
+
+.album-create-select option {
+    background: #0F121D;
+    border: 1px solid #39B2B2;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.album-create-submit {
+    border: 1px solid #39B2B2;
+    background: rgba(15, 18, 29, 0.80);
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: white;
+    margin-top: 20px;
+    padding: 10px 50px;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.album-create-submit:hover {
+    background: rgba(15, 18, 29, 0.95);
+    padding: 10px 80px;
 }
 
 /* NOW PLAYING BAR */
