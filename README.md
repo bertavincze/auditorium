@@ -1,12 +1,19 @@
+
 ## Auditorium
 
 Auditorium is a web application designed to allow registered users to upload and share their music with an online audience.
 The application is currently a work in progress.
 
+## Screenshots
+
+<img src="https://i.imgur.com/lhnLdgK.png" width="350" title="Landing page">
+<img src="https://i.imgur.com/jL1XPHV.png" width="350" title="Profile page">
+
 ## Config
 
 Create a database named 'auditorium', and add the following to tomcat's context.xml before deployment:
-<Resource name="jdbc/auditorium"
+
+    <Resource name="jdbc/auditorium"
           type="javax.sql.DataSource"
           username="postgres"
           password="admin"
