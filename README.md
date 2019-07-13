@@ -6,8 +6,7 @@ The application is currently a work in progress.
 
 ## Screenshots
 
-<img src="https://i.imgur.com/lhnLdgK.png" width="350" title="Landing page">
-<img src="https://i.imgur.com/jL1XPHV.png" width="350" title="Profile page">
+<img src="https://i.imgur.com/lhnLdgK.png" width="350" title="Landing page"><img src="https://i.imgur.com/jL1XPHV.png" width="350" title="Profile page">
 
 ## Config
 
